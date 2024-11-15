@@ -14,6 +14,8 @@ public class Student {
         this.userId = userId;
     }
 
+    public Student(){
+    }
     // Getter and Setter Methods
     public int getId() {
         return id;
