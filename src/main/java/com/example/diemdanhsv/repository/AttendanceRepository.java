@@ -1,6 +1,9 @@
-package com.example.diemdanhsv.database;
+package com.example.diemdanhsv.repository;
 
+import com.example.diemdanhsv.database.DatabaseConnection;
 import com.example.diemdanhsv.models.User;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -8,8 +11,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Date;
 
-public class QueryHandler {
-
+public class AttendanceRepository {
     // Phương thức đăng nhập, trả về đối tượng User nếu đăng nhập thành công, null nếu không thành công
     public static User login(String username, String password) {
         String query = "SELECT * FROM users WHERE username = ? AND password = ?";
@@ -34,5 +36,24 @@ public class QueryHandler {
             e.printStackTrace();
         }
         return null; // Trả về null nếu không tìm thấy user
+    }
+    // Phương thức lấy danh sách môn học từ cơ sở dữ liệu
+    public ObservableList<String> getCourses() {
+        ObservableList<String> subjects = FXCollections.observableArrayList();
+
+        String query = "SELECT name FROM courses";
+        try (Connection conn = DatabaseConnection.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(query);
+             ResultSet rs = stmt.executeQuery()) {
+
+            while (rs.next()) {
+                subjects.add(rs.getString("name")); // Thay "subject_name" bằng tên cột chứa tên môn học
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return subjects;
     }
 }

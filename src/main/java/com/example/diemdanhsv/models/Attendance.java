@@ -18,7 +18,8 @@ public class Attendance {
         this.date = date;
         this.status = status;
     }
-
+    public Attendance(){
+    }
     // Getter and Setter Methods
     public int getId() {
         return id;
