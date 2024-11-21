@@ -10,11 +10,12 @@ public class Student {
     private BooleanProperty selected; // Thuộc tính checkbox
 
     // Constructor
-    public Student(int id, String name, String email, Integer userId) {
+    public Student(int id, String name, String email, Integer userId, boolean gender) {
         this.id = id;
         this.name = name;
         this.email = email;
         this.userId = userId;
+        this.gender= gender;
         this.selected = new SimpleBooleanProperty(false); // Mặc định là chưa chọn
 
     }
