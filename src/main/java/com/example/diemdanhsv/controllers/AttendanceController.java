@@ -1,12 +1,15 @@
 package com.example.diemdanhsv.controllers;
 
 import com.example.diemdanhsv.models.Student;
+import com.example.diemdanhsv.repository.AttendanceRepository;
+import com.example.diemdanhsv.repository.CourseRepository;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
+import javafx.scene.control.cell.CheckBoxTableCell;
 import javafx.scene.control.cell.PropertyValueFactory;
 
 import java.net.URL;
@@ -15,13 +18,17 @@ import java.util.ResourceBundle;
 
 public class AttendanceController implements Initializable {
     @FXML
-    public TextField idField;
+    private TextField idField;
     @FXML
-    public TextField nameField;
+    private TextField nameField;
     @FXML
-    public TextField emailField;
+    private TextField emailField;
     @FXML
-    public TextField userIdField;
+    private TextField userIdField;
+
+    @FXML
+    private ComboBox<String> courseComboBox; // Thay đổi từ subjectComboBox thành courseComboBox
+
     @FXML
     private TableView<Student> attendanceTable;
     @FXML
@@ -32,18 +39,13 @@ public class AttendanceController implements Initializable {
     private TableColumn<Student, String> emailColumn;
     @FXML
     private TableColumn<Student, Integer> userIdColumn;
+    @FXML
+    private TableColumn<Student, Boolean> statusColumn; // Cột checkbox
 
     private ObservableList<Student> studentList; // Danh sách sinh viên
 
-    @FXML
+    @Override
     public void initialize(URL location, ResourceBundle resources) {
-        // Khởi tạo danh sách sinh viên
-        studentList = FXCollections.observableArrayList(
-                new Student(1, "Hien1", "hienhaha1@gmail.com", 1),
-                new Student(2, "Hien2", "hienhaha2@gmail.com", 2),
-                new Student(3, "Hien3", "hienhaha3@gmail.com", 3),
-                new Student(4, "Hien4", "hienhaha4@gmail.com", 4)
-        );
 
         // Liên kết cột với thuộc tính trong lớp Student
         idColumn.setCellValueFactory(new PropertyValueFactory<>("id"));
@@ -51,8 +53,26 @@ public class AttendanceController implements Initializable {
         emailColumn.setCellValueFactory(new PropertyValueFactory<>("email"));
         userIdColumn.setCellValueFactory(new PropertyValueFactory<>("userId"));
 
+        // Cột Checkbox
+        statusColumn.setCellValueFactory(cellData -> cellData.getValue().selectedProperty());
+        statusColumn.setCellFactory(CheckBoxTableCell.forTableColumn(statusColumn));
+
         // Gắn danh sách sinh viên vào bảng
         attendanceTable.setItems(studentList);
+
+        // Tải danh sách khóa học từ cơ sở dữ liệu
+        loadCourses();
+    }
+
+    // Phương thức tải danh sách khóa học vào ComboBox
+    private void loadCourses() {
+        CourseRepository queryHandle = new CourseRepository();  // Sử dụng CourseQueryHandle thay vì SubjectQueryHandle
+        ObservableList<String> courses = queryHandle.getCourses();
+        courseComboBox.setItems(courses);
+
+        if (courses.isEmpty()) {
+            showAlert("No Data", "No courses found in the database.");
+        }
     }
 
     // Thêm sinh viên mới

@@ -1,0 +1,29 @@
+/* Style cho VBox */
+VBox {
+    -fx-background-color: #f0f0f0; /* Màu nền sáng cho phần VBox */
+    -fx-padding: 20;
+    -fx-border-radius: 10;
+}
+
+/* Style cho các nút */
+.menu-button {
+    -fx-background-color: #4CAF50; /* Màu nền ban đầu */
+    -fx-text-fill: white; /* Màu chữ */
+    -fx-font-size: 16px;
+    -fx-padding: 10px 20px; /* Padding cho nút */
+    -fx-background-radius: 5px; /* Bo góc */
+    -fx-effect: innershadow( gaussian , rgba(0,0,0,0.2), 5, 0.0 , 0 , 1 ); /* Shadow nhẹ */
+    -fx-cursor: hand; /* Con trỏ khi rê chuột */
+}
+
+/* Hover effect */
+.menu-button:hover {
+    -fx-background-color: #45a049; /* Màu nền khi hover */
+    -fx-scale-x: 1.1; /* Tăng kích thước khi hover */
+    -fx-scale-y: 1.1; /* Tăng kích thước khi hover */
+}
+
+/* Click effect */
+.menu-button:pressed {
+    -fx-background-color: #388e3c; /* Màu khi click */
+}

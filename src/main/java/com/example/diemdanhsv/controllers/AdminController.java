@@ -1,6 +1,5 @@
 package com.example.diemdanhsv.controllers;
 
-import com.example.diemdanhsv.models.Course;
 import javafx.fxml.FXML;
 import javafx.scene.control.TextField;
 import javafx.scene.control.ListView;
