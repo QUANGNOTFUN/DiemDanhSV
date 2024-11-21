@@ -2,6 +2,7 @@ package com.example.diemdanhsv.controllers;
 
 import com.example.diemdanhsv.models.Student;
 import com.example.diemdanhsv.repository.AttendanceRepository;
+import com.example.diemdanhsv.repository.CourseRepository;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -45,13 +46,6 @@ public class AttendanceController implements Initializable {
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        // Khởi tạo danh sách sinh viên (ví dụ tạm thời)
-        studentList = FXCollections.observableArrayList(
-                new Student(1, "Hien1", "hienhaha1@gmail.com", 1),
-                new Student(2, "Hien2", "hienhaha2@gmail.com", 2),
-                new Student(3, "Hien3", "hienhaha3@gmail.com", 3),
-                new Student(4, "Hien4", "hienhaha4@gmail.com", 4)
-        );
 
         // Liên kết cột với thuộc tính trong lớp Student
         idColumn.setCellValueFactory(new PropertyValueFactory<>("id"));
@@ -72,7 +66,7 @@ public class AttendanceController implements Initializable {
 
     // Phương thức tải danh sách khóa học vào ComboBox
     private void loadCourses() {
-        AttendanceRepository queryHandle = new AttendanceRepository();  // Sử dụng CourseQueryHandle thay vì SubjectQueryHandle
+        CourseRepository queryHandle = new CourseRepository();  // Sử dụng CourseQueryHandle thay vì SubjectQueryHandle
         ObservableList<String> courses = queryHandle.getCourses();
         courseComboBox.setItems(courses);
 

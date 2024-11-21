@@ -6,6 +6,7 @@ public class Student {
     private String name;
     private String email;
     private Integer userId;
+    private Boolean gender;
     private BooleanProperty selected; // Thuộc tính checkbox
 
     // Constructor
@@ -43,6 +44,13 @@ public class Student {
 
     public void setEmail(String email) {
         this.email = email;
+    }
+    public boolean getGender() {
+        return gender;
+    }
+
+    public void setGender(boolean gender) {
+        this.gender = gender;
     }
 
     public Integer getUserId() {

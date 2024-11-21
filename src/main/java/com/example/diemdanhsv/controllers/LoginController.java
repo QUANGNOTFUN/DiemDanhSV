@@ -47,13 +47,14 @@ public class LoginController {
             // Lấy cửa sổ hiện tại và thay đổi nội dung scene
             Stage stage = (Stage) usernameField.getScene().getWindow();
             stage.setScene(new Scene(root));
-            stage.setTitle("Attendance");
+            stage.setTitle("MENU");
             stage.show();
         } catch (IOException e) {
             e.printStackTrace();
             showErrorMessage("Error", "Failed to load Attendance view.");
         }
     }
+
 
     private void showErrorMessage(String title, String message) {
         Alert alert = new Alert(Alert.AlertType.ERROR);

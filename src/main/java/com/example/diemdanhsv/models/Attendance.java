@@ -1,26 +1,28 @@
 package com.example.diemdanhsv.models;
 
 import java.time.LocalDate;
-import java.util.Date;
 
 public class Attendance {
     private int id;
     private int studentId;
     private int courseId;
-    private Date date;
+    private LocalDate date; // Thống nhất dùng LocalDate
     private String status;
 
-    // Constructor
-    public Attendance(int id, int studentId, int courseId, Date date, String status) {
+    // Constructor với Date là LocalDate
+    public Attendance(int id, int studentId, int courseId, LocalDate date, String status) {
         this.id = id;
         this.studentId = studentId;
         this.courseId = courseId;
         this.date = date;
         this.status = status;
     }
-    public Attendance(){
+
+    // Constructor mặc định
+    public Attendance() {
     }
-    // Getter and Setter Methods
+
+    // Getter và Setter
     public int getId() {
         return id;
     }
@@ -45,11 +47,11 @@ public class Attendance {
         this.courseId = courseId;
     }
 
-    public Date getDate() {
+    public LocalDate getDate() {
         return date;
     }
 
-    public void setDate(Date date) {
+    public void setDate(LocalDate date) {
         this.date = date;
     }
 
