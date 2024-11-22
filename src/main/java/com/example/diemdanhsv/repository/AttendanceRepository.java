@@ -16,7 +16,9 @@ public class AttendanceRepository {
     // Phương thức lấy danh sách Attendance từ cơ sở dữ liệu
     public ObservableList<Attendance> getAttendanceList() {
         ObservableList<Attendance> attendanceList = FXCollections.observableArrayList();
-        String query = "SELECT id, student_id, course_id, date, status FROM attendance";
+        String query = "SELECT a.id, a.student_id, a.course_id, a.date, a.status, s.name AS student_name, s.gender " +
+                       "FROM attendance a " +
+                       "JOIN students s ON a.student_id = s.id";
 
         try (Connection connection = DatabaseConnection.getConnection();
              PreparedStatement preparedStatement = connection.prepareStatement(query);
@@ -28,7 +30,9 @@ public class AttendanceRepository {
                         resultSet.getInt("student_id"),
                         resultSet.getInt("course_id"),
                         resultSet.getDate("date").toLocalDate(),
-                        resultSet.getString("status")
+                        resultSet.getString("status"),
+                        resultSet.getString("student_name"),
+                        resultSet.getString("gender")
                 );
 
                 attendanceList.add(attendance);
@@ -40,4 +44,5 @@ public class AttendanceRepository {
 
         return attendanceList;
     }
+
 }

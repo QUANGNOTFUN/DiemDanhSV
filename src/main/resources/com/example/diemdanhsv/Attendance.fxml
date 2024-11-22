@@ -40,6 +40,11 @@
                             <ToggleGroup />
                         </toggleGroup>
                     </RadioButton>
+                    <RadioButton text="Khác">
+                        <toggleGroup>
+                            <ToggleGroup />
+                        </toggleGroup>
+                    </RadioButton>
                 </HBox>
 
                 <TextField fx:id="emailField" promptText="Email" />
@@ -55,13 +60,13 @@
         <!-- Table View -->
         <VBox layoutX="300" layoutY="20" spacing="10">
             <Label style="-fx-font-size: 16px; -fx-font-weight: bold;" text="Danh sách điểm danh" />
-            <TableView fx:id="attendanceTable" prefHeight="400" prefWidth="500">
+            <TableView fx:id="attendanceTable" prefHeight="600" prefWidth="800">
                 <columns>
-                    <TableColumn fx:id="idColumn" prefWidth="46.0" text="Mã số" />
-                    <TableColumn fx:id="nameColumn" prefWidth="101.0" text="Họ và tên" />
-                    <TableColumn fx:id="genderColumn" prefWidth="88.0" text="Giới tính" />
-                    <TableColumn fx:id="emailColumn" prefWidth="101.0" text="Email" />
-                    <TableColumn fx:id="statusColumn" prefWidth="194.0" text="Trạng thái" />
+                    <TableColumn fx:id="idColumn" prefWidth="82.0" text="Mã số" />
+                    <TableColumn fx:id="nameColumn" prefWidth="110.0" text="Họ và tên" />
+                    <TableColumn fx:id="genderColumn" prefWidth="77.0" text="Giới tính" />
+                    <TableColumn fx:id="dateColumn" prefWidth="116.0" text="Ngày điểm danh" />
+                    <TableColumn fx:id="statusColumn" prefWidth="110.0" text="Trạng thái" />
                 </columns>
             </TableView>
         </VBox>
