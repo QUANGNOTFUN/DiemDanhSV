@@ -45,13 +45,13 @@ public class LoginController {
             Parent root = loader.load();
 
             // Lấy cửa sổ hiện tại và thay đổi nội dung scene
-            Stage stage = (Stage) usernameField.getScene().getWindow();
+            Stage stage = new Stage();
             stage.setScene(new Scene(root));
             stage.setTitle("MENU");
             stage.show();
         } catch (IOException e) {
             e.printStackTrace();
-            showErrorMessage("Error", "Failed to load Attendance view.");
+            showErrorMessage("Error", "Failed to load MENU.");
         }
     }
 

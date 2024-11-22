@@ -17,12 +17,13 @@
         <!-- Form Inputs -->
         <VBox alignment="TOP_LEFT" layoutX="20" layoutY="20" prefWidth="250" spacing="15">
             <children>
-                <Label style="-fx-font-size: 16px; -fx-font-weight: bold;" text="Thông tin sinh viên" />
+                <Label style="-fx-font-size: 20px; -fx-font-weight: bold;" text="Thông tin sinh viên" />
 
                 <HBox alignment="CENTER_LEFT" spacing="10">
                     <Label text="Môn:" />
                     <ComboBox fx:id="courseComboBox" prefHeight="26.0" prefWidth="189.0" />
                 </HBox>
+                <Label style="-fx-font-size: 14px; -fx-font-weight: bold;" text="Thêm sinh viên" />
 
                 <TextField fx:id="idField" promptText="Mã số sinh viên" />
                 <TextField fx:id="nameField" promptText="Tên sinh viên" />

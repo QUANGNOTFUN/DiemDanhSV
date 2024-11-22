@@ -11,7 +11,7 @@
     <!-- Menu container -->
     <VBox alignment="CENTER" layoutX="127.0" layoutY="121.0" spacing="20">
         <!-- Button 2 -->
-        <Button fx:id="openAttendance" onAction="#openAttendance" styleClass="menu-button" text="Xem danh sách điểm danh" />
+        <Button onAction="#openAttendance" styleClass="menu-button" text="Xem danh sách điểm danh" />
         <!-- Button 3 -->
         <Button styleClass="menu-button" text="Đổi mật khẩu" />
         <!-- Button 4 -->
