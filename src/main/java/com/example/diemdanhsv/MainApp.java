@@ -18,6 +18,7 @@ public class MainApp extends Application {
         // Tải giao diện FXML cho Login
         FXMLLoader loader = new FXMLLoader(getClass().getResource("LoginView.fxml"));
         VBox root = loader.load();
+
         Scene scene = new Scene(root);
 
         primaryStage.setTitle("Login");

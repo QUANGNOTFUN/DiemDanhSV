@@ -3,37 +3,67 @@
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.ComboBox?>
 <?import javafx.scene.control.Label?>
+<?import javafx.scene.control.RadioButton?>
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
 <?import javafx.scene.control.TextField?>
+<?import javafx.scene.control.ToggleGroup?>
 <?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 
 <AnchorPane xmlns="http://javafx.com/javafx/23" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.diemdanhsv.controllers.AttendanceController">
     <children>
         <!-- Form Inputs -->
-        <VBox layoutX="10" layoutY="10" prefWidth="200" spacing="10">
+        <VBox alignment="TOP_LEFT" layoutX="20" layoutY="20" prefWidth="250" spacing="15">
             <children>
-                <Label text="Môn:" />
-                <ComboBox fx:id="courseComboBox" prefWidth="150.0" />
-                <TextField fx:id="idField" promptText="Student ID" />
-                <TextField fx:id="nameField" promptText="Student Name" />
+                <Label style="-fx-font-size: 20px; -fx-font-weight: bold;" text="Thông tin sinh viên" />
+
+                <HBox alignment="CENTER_LEFT" spacing="10">
+                    <Label text="Môn:" />
+                    <ComboBox fx:id="courseComboBox" prefHeight="26.0" prefWidth="189.0" />
+                </HBox>
+                <Label style="-fx-font-size: 14px; -fx-font-weight: bold;" text="Thêm sinh viên" />
+
+                <TextField fx:id="idField" promptText="Mã số sinh viên" />
+                <TextField fx:id="nameField" promptText="Tên sinh viên" />
+
+                <HBox alignment="CENTER_LEFT" spacing="10">
+                    <Label text="Giới tính:" />
+                    <RadioButton text="Nam">
+                        <toggleGroup>
+                            <ToggleGroup fx:id="genderGroup" />
+                        </toggleGroup>
+                    </RadioButton>
+                    <RadioButton text="Nữ">
+                        <toggleGroup>
+                            <ToggleGroup />
+                        </toggleGroup>
+                    </RadioButton>
+                </HBox>
+
                 <TextField fx:id="emailField" promptText="Email" />
-                <TextField fx:id="userIdField" promptText="User ID" />
-                <Button onAction="#add" text="Add" />
-                <Button onAction="#remove" text="Remove" />
+                <TextField fx:id="userIdField" promptText="Mã người dùng" />
+
+                <HBox alignment="CENTER" spacing="10">
+                    <Button fx:id="addButton" onAction="#add" style="-fx-font-size: 14px;" text="Thêm" />
+                    <Button fx:id="removeButton" onAction="#remove" style="-fx-font-size: 14px;" text="Xóa" />
+                </HBox>
             </children>
         </VBox>
 
         <!-- Table View -->
-        <TableView fx:id="attendanceTable" layoutX="220" layoutY="10" prefHeight="400">
-            <columns>
-                <TableColumn fx:id="idColumn" prefWidth="70.0" text="ID" />
-                <TableColumn fx:id="nameColumn" prefWidth="120.0" text="Name" />
-                <TableColumn fx:id="genderColumn" prefWidth="150.0" text="Gender" />
-                <TableColumn fx:id="dateColumn" prefWidth="90.0" text="Date" />
-                <TableColumn fx:id="statusColumn" prefWidth="100.0" text="Status" />
-            </columns>
-        </TableView>
+        <VBox layoutX="300" layoutY="20" spacing="10">
+            <Label style="-fx-font-size: 16px; -fx-font-weight: bold;" text="Danh sách điểm danh" />
+            <TableView fx:id="attendanceTable" prefHeight="400" prefWidth="500">
+                <columns>
+                    <TableColumn fx:id="idColumn" prefWidth="46.0" text="Mã số" />
+                    <TableColumn fx:id="nameColumn" prefWidth="101.0" text="Họ và tên" />
+                    <TableColumn fx:id="genderColumn" prefWidth="88.0" text="Giới tính" />
+                    <TableColumn fx:id="emailColumn" prefWidth="101.0" text="Email" />
+                    <TableColumn fx:id="statusColumn" prefWidth="194.0" text="Trạng thái" />
+                </columns>
+            </TableView>
+        </VBox>
     </children>
 </AnchorPane>

@@ -1,36 +1,28 @@
 package com.example.diemdanhsv.controllers;
 
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
 import javafx.stage.Stage;
-import javafx.scene.Node;
 
 import java.io.IOException;
 
 public class MainMenuController {
-    @FXML
-    private Button openAttendance;
 
     @FXML
-    public void openAttendance() {
+    private void openAttendance(ActionEvent event) {
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/example/diemdanhsv/Attendance.fxml"));
             Parent root = loader.load();
-            
-            Stage stage = (Stage) openAttendance.getScene().getWindow();
-            stage.setScene(new Scene(root));
+            Stage stage = new Stage();
             stage.setTitle("Attendance");
+            stage.setScene(new Scene(root));
             stage.show();
         } catch (IOException e) {
             e.printStackTrace();
-            showErrorMessage("Error", "Failed to load Attendance view.");
+            // Optionally, show an alert to the user
         }
-    }
-
-    private void showErrorMessage(String title, String message) {
-        // Implement your error message display logic here
     }
 }
