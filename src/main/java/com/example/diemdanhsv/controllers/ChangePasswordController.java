@@ -19,10 +19,10 @@ public class ChangePasswordController {
     private Label messageLabel;
 
     private User currentUser;
-    private final UserRepository userRepository;
+    private UserRepository userRepository;
 
     public ChangePasswordController() {
-        this.userRepository = new UserRepository();
+        userRepository = new UserRepository();
     }
 
     public void setCurrentUser(User user) {
@@ -31,54 +31,65 @@ public class ChangePasswordController {
 
     @FXML
     private void handleChangePassword() {
-        if (currentUser == null) {
-            messageLabel.setText("Lỗi: Không tìm thấy thông tin người dùng!");
-            return;
-        }
-
         String currentPassword = currentPasswordField.getText();
         String newPassword = newPasswordField.getText();
         String confirmPassword = confirmPasswordField.getText();
 
+        if (validateInputs(currentPassword, newPassword, confirmPassword)) {
+            try {
+                if (userRepository.updatePassword(currentUser.getId(), newPassword)) {
+                    currentUser.setHashedPassword(newPassword);
+                    currentUser.setFirstLogin(false);
+                    showSuccess("Đổi mật khẩu thành công!");
+                    closeWindow();
+                } else {
+                    showError("Có lỗi xảy ra khi cập nhật mật khẩu!");
+                }
+            } catch (Exception e) {
+                showError("Có lỗi xảy ra: " + e.getMessage());
+                e.printStackTrace();
+            }
+        }
+    }
+
+    private boolean validateInputs(String currentPassword, String newPassword, String confirmPassword) {
         if (currentPassword.isEmpty() || newPassword.isEmpty() || confirmPassword.isEmpty()) {
-            messageLabel.setText("Vui lòng điền đầy đủ thông tin!");
-            return;
+            showError("Vui lòng điền đầy đủ thông tin!");
+            return false;
         }
 
-        try {
-            if (!currentUser.checkPassword(currentPassword)) {
-                messageLabel.setText("Mật khẩu hiện tại không đúng!");
-                return;
-            }
-
-            if (newPassword.length() < 6) {
-                messageLabel.setText("Mật khẩu mới phải có ít nhất 6 ký tự!");
-                return;
-            }
-
-            if (!newPassword.equals(confirmPassword)) {
-                messageLabel.setText("Xác nhận mật khẩu không khớp!");
-                return;
-            }
-
-            if (userRepository.updatePassword(currentUser.getId(), newPassword)) {
-                currentUser.setHashedPassword(newPassword);
-                currentUser.setFirstLogin(false);
-                
-                Alert alert = new Alert(Alert.AlertType.INFORMATION);
-                alert.setTitle("Thành công");
-                alert.setHeaderText(null);
-                alert.setContentText("Đổi mật khẩu thành công!");
-                alert.showAndWait();
-                
-                ((Stage) currentPasswordField.getScene().getWindow()).close();
-            } else {
-                messageLabel.setText("Có lỗi xảy ra khi cập nhật mật khẩu!");
-            }
-        } catch (Exception e) {
-            messageLabel.setText("Có lỗi xảy ra: " + e.getMessage());
-            e.printStackTrace();
+        if (!userRepository.checkPassword(currentUser.getId(), currentPassword)) {
+            showError("Mật khẩu hiện tại không đúng!");
+            return false;
         }
+
+        if (!newPassword.equals(confirmPassword)) {
+            showError("Mật khẩu mới không khớp!");
+            return false;
+        }
+
+        if (newPassword.length() < 6) {
+            showError("Mật khẩu mới phải có ít nhất 6 ký tự!");
+            return false;
+        }
+
+        return true;
+    }
+
+    private void showError(String message) {
+        messageLabel.setText(message);
+    }
+
+    private void showSuccess(String message) {
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setTitle("Thành công");
+        alert.setHeaderText(null);
+        alert.setContentText(message);
+        alert.showAndWait();
+    }
+
+    private void closeWindow() {
+        ((Stage) currentPasswordField.getScene().getWindow()).close();
     }
 
     @FXML
