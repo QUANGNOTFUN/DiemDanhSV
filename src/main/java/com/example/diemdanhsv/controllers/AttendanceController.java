@@ -1,6 +1,8 @@
 package com.example.diemdanhsv.controllers;
 
+import com.example.diemdanhsv.models.Attendance;
 import com.example.diemdanhsv.models.Student;
+import com.example.diemdanhsv.repository.AttendanceRepository;
 import com.example.diemdanhsv.repository.CourseRepository;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -21,9 +23,11 @@ public class AttendanceController implements Initializable {
     public TextField nameField;
     @FXML
     public TextField userIdField;
+    @FXML
+    public TextField genderField;
 
     @FXML
-    private ComboBox<String> courseComboBox; // Thay đổi từ subjectComboBox thành courseComboBox
+    private ComboBox<String> courseComboBox;
     @FXML
     private TableView<Student> attendanceTable;
     @FXML
@@ -31,47 +35,64 @@ public class AttendanceController implements Initializable {
     @FXML
     private TableColumn<Student, String> nameColumn;
     @FXML
+    private TableColumn<Student, String> genderColumn;
+    @FXML
     private TableColumn<Student, String> statusColumn;
 
-    private ObservableList<Student> studentList; // Danh sách sinh viên
+    private ObservableList<Student> studentList;
+
+    private AttendanceRepository attendanceRepository;
 
     @FXML
     public void initialize(URL location, ResourceBundle resources) {
-        // Liên kết cột với thuộc tính trong lớp Student
+        attendanceRepository = new AttendanceRepository();
+
         idColumn.setCellValueFactory(new PropertyValueFactory<>("id"));
         nameColumn.setCellValueFactory(new PropertyValueFactory<>("name"));
+        genderColumn.setCellValueFactory(new PropertyValueFactory<>("gender"));
         statusColumn.setCellValueFactory(new PropertyValueFactory<>("status"));
 
-        // Gắn danh sách sinh viên vào bảng
+        studentList = FXCollections.observableArrayList();
         attendanceTable.setItems(studentList);
-        // Tải danh sách khóa học từ cơ sở dữ liệu
+
         loadCourses();
+        loadAttendanceData();
     }
 
-    // Thêm sinh viên mới
+    private void loadAttendanceData() {
+        ObservableList<Attendance> attendanceList = attendanceRepository.getAttendanceList();
+        for (Attendance attendance : attendanceList) {
+            Student student = new Student(
+                attendance.getStudentId(),
+                attendance.getStudentName(),
+                attendance.getStudentId(),
+                attendance.getGender(),
+                attendance.getStatus()
+            );
+            studentList.add(student);
+        }
+    }
+
     public void add(ActionEvent e) {
         try {
-            // Tạo sinh viên mới
             Student newStudent = new Student();
             newStudent.setId(Integer.parseInt(idField.getText()));
             newStudent.setName(nameField.getText());
             newStudent.setUserId(Integer.parseInt(userIdField.getText()));
+            newStudent.setGender(genderField.getText());
 
-            // Thêm vào danh sách
             studentList.add(newStudent);
 
-            // Xóa dữ liệu trong các trường nhập
             idField.clear();
             nameField.clear();
             userIdField.clear();
+            genderField.clear();
         } catch (NumberFormatException ex) {
             showAlert("Input Error", "Please enter valid data!");
         }
     }
 
-    // Xóa sinh viên được chọn
     public void remove(ActionEvent e) {
-        // Lấy sinh viên được chọn từ bảng
         Student selectedStudent = attendanceTable.getSelectionModel().getSelectedItem();
 
         if (selectedStudent == null) {
@@ -79,20 +100,19 @@ public class AttendanceController implements Initializable {
             return;
         }
 
-        // Hiển thị hộp thoại xác nhận
         Alert confirmationAlert = new Alert(Alert.AlertType.CONFIRMATION);
         confirmationAlert.setTitle("Delete Confirmation");
         confirmationAlert.setHeaderText("Delete Student");
         Optional<ButtonType> result = confirmationAlert.showAndWait();
 
         if (result.isPresent() && result.get() == ButtonType.OK) {
-            studentList.remove(selectedStudent); // Xóa sinh viên khỏi danh sách
+            studentList.remove(selectedStudent);
             showAlert("Success", "Student deleted successfully.");
         }
     }
-    // Phương thức tải danh sách khóa học vào ComboBox
+
     private void loadCourses() {
-        CourseRepository queryHandle = new CourseRepository();  // Sử dụng CourseQueryHandle thay vì SubjectQueryHandle
+        CourseRepository queryHandle = new CourseRepository();
         ObservableList<String> courses = queryHandle.getCourses();
         courseComboBox.setItems(courses);
 
@@ -100,7 +120,7 @@ public class AttendanceController implements Initializable {
             showAlert("No Data", "No courses found in the database.");
         }
     }
-    // Phương thức hiển thị thông báo
+
     private void showAlert(String title, String message) {
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
         alert.setTitle(title);

@@ -6,23 +6,28 @@ public class Attendance {
     private int id;
     private int studentId;
     private int courseId;
-    private LocalDate date; // Thống nhất dùng LocalDate
+    private LocalDate date;
     private String status;
+    private String studentName;
+    private String gender;
 
-    // Constructor với Date là LocalDate
-    public Attendance(int id, int studentId, int courseId, LocalDate date, String status) {
+
+    // Constructor with all fields
+    public Attendance(int id, int studentId, int courseId, LocalDate date, String status, String studentName, String gender) {
         this.id = id;
         this.studentId = studentId;
         this.courseId = courseId;
         this.date = date;
         this.status = status;
+        this.studentName = studentName;
+        this.gender = gender;
     }
 
-    // Constructor mặc định
+    // Default constructor
     public Attendance() {
     }
 
-    // Getter và Setter
+    // Getters and Setters
     public int getId() {
         return id;
     }
@@ -61,5 +66,20 @@ public class Attendance {
 
     public void setStatus(String status) {
         this.status = status;
+    }
+
+    public String getStudentName() {
+        return studentName;
+    }
+
+    public void setStudentName(String studentName) {
+        this.studentName = studentName;
+    }
+    public String getGender() {
+        return gender;
+    }
+
+    public void setGender(String gender) {
+        this.gender = gender;
     }
 }

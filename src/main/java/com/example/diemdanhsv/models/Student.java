@@ -3,20 +3,24 @@ package com.example.diemdanhsv.models;
 public class Student {
     private int id;
     private String name;
-    private String email;
-    private Integer userId;
+    private int userId;
+    private String gender;
+    private String status;
 
-    // Constructor
-    public Student(int id, String name, String email, Integer userId) {
+    // Constructor with all fields
+    public Student(int id, String name, int userId, String gender, String status) {
         this.id = id;
         this.name = name;
-        this.email = email;
         this.userId = userId;
+        this.gender = gender;
+        this.status = status;
     }
 
-    public Student(){
+    // Default constructor
+    public Student() {
     }
-    // Getter and Setter Methods
+
+    // Getters and Setters
     public int getId() {
         return id;
     }
@@ -33,19 +37,27 @@ public class Student {
         this.name = name;
     }
 
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
-    public Integer getUserId() {
+    public int getUserId() {
         return userId;
     }
 
-    public void setUserId(Integer userId) {
+    public void setUserId(int userId) {
         this.userId = userId;
+    }
+
+    public String getGender() {
+        return gender;
+    }
+
+    public void setGender(String gender) {
+        this.gender = gender;
+    }
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
     }
 }
