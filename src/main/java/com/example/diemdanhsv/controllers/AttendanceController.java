@@ -11,6 +11,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.layout.HBox;
 
 import java.net.URL;
 import java.util.Optional;
@@ -27,7 +28,7 @@ public class AttendanceController implements Initializable {
     public TextField genderField;
 
     @FXML
-    private ComboBox<String> courseComboBox;
+    private HBox courseButtonContainer;
     @FXML
     private TableView<Student> attendanceTable;
     @FXML
@@ -43,7 +44,7 @@ public class AttendanceController implements Initializable {
 
     private AttendanceRepository attendanceRepository;
 
-    @FXML
+    @Override
     public void initialize(URL location, ResourceBundle resources) {
         attendanceRepository = new AttendanceRepository();
 
@@ -63,11 +64,11 @@ public class AttendanceController implements Initializable {
         ObservableList<Attendance> attendanceList = attendanceRepository.getAttendanceList();
         for (Attendance attendance : attendanceList) {
             Student student = new Student(
-                attendance.getStudentId(),
-                attendance.getStudentName(),
-                attendance.getStudentId(),
-                attendance.getGender(),
-                attendance.getStatus()
+                    attendance.getStudentId(),
+                    attendance.getStudentName(),
+                    attendance.getStudentId(), // Giá trị userId
+                    attendance.getGender(),
+                    attendance.getStatus()
             );
             studentList.add(student);
         }
@@ -106,18 +107,52 @@ public class AttendanceController implements Initializable {
         Optional<ButtonType> result = confirmationAlert.showAndWait();
 
         if (result.isPresent() && result.get() == ButtonType.OK) {
-            studentList.remove(selectedStudent);
-            showAlert("Success", "Student deleted successfully.");
+            boolean isDeleted = attendanceRepository.deleteStudent(selectedStudent.getId());
+
+            if (isDeleted) {
+                studentList.remove(selectedStudent);
+                showAlert("Success", "Student deleted successfully.");
+            } else {
+                showAlert("Error", "Failed to delete student from the database.");
+            }
         }
     }
 
     private void loadCourses() {
         CourseRepository queryHandle = new CourseRepository();
         ObservableList<String> courses = queryHandle.getCourses();
-        courseComboBox.setItems(courses);
+
+        courseButtonContainer.getChildren().clear();
+
+        for (String course : courses) {
+            Button courseButton = new Button(course);
+            courseButton.setPrefWidth(300);
+            courseButton.setOnAction(event -> handleCourseSelection(course));
+            courseButtonContainer.getChildren().add(courseButton);
+        }
 
         if (courses.isEmpty()) {
             showAlert("No Data", "No courses found in the database.");
+        }
+    }
+
+    private void handleCourseSelection(String course) {
+        CourseRepository courseRepository = new CourseRepository();
+        int courseId = courseRepository.getCourseIdByName(course);
+
+        ObservableList<Attendance> attendanceList = attendanceRepository.getAttendanceByCourseId(courseId);
+
+        studentList.clear();
+
+        for (Attendance attendance : attendanceList) {
+            Student student = new Student(
+                    attendance.getStudentId(),
+                    attendance.getStudentName(),
+                    attendance.getStudentId(),
+                    attendance.getGender(),
+                    attendance.getStatus()
+            );
+            studentList.add(student);
         }
     }
 

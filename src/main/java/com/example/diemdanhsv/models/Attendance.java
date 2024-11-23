@@ -9,6 +9,7 @@ public class Attendance {
     private LocalDate date;
     private String status;
     private String studentName;
+    private String courseName;
     private String gender;
 
 
@@ -22,7 +23,16 @@ public class Attendance {
         this.studentName = studentName;
         this.gender = gender;
     }
-
+    public Attendance(int id, int studentId, LocalDate date, String status, String studentName, String gender, String courseName, int courseId) {
+        this.id = id;
+        this.studentId = studentId;
+        this.date = date;
+        this.status = status;
+        this.studentName = studentName;
+        this.gender = gender;
+        this.courseName = courseName;
+        this.courseId = courseId; // Initialize courseId
+    }
     // Default constructor
     public Attendance() {
     }
@@ -74,6 +84,13 @@ public class Attendance {
 
     public void setStudentName(String studentName) {
         this.studentName = studentName;
+    }
+    public String getCourseName() {
+        return courseName;
+    }
+
+    public void setCourseName(String courseName) {
+        this.courseName = courseName;
     }
     public String getGender() {
         return gender;
