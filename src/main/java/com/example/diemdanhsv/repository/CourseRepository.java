@@ -8,33 +8,13 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.List;
+
 
 public class CourseRepository {
 
-    public List<String> getCourseNames() {
-        List<String> courseNames = new ArrayList<>();
-        String query = "SELECT name FROM courses";
-
-        try (Connection connection = DatabaseConnection.getConnection();
-             PreparedStatement preparedStatement = connection.prepareStatement(query);
-             ResultSet resultSet = preparedStatement.executeQuery()) {
-
-            while (resultSet.next()) {
-                courseNames.add(resultSet.getString("name"));
-            }
-
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-
-        return courseNames;
-    }
-
     public ObservableList<String> getCourses() {
         ObservableList<String> courses = FXCollections.observableArrayList();
-        String query = "SELECT name FROM courses"; // Lấy tên khóa học
+        String query = "SELECT name FROM course"; // Lấy tên khóa học
 
         try (Connection connection = DatabaseConnection.getConnection();
              PreparedStatement preparedStatement = connection.prepareStatement(query);
@@ -52,7 +32,7 @@ public class CourseRepository {
     }
 
     public int getCourseIdByName(String courseName) {
-        String query = "SELECT id FROM courses WHERE name = ?";
+        String query = "SELECT id FROM course WHERE name = ?";
         try (Connection connection = DatabaseConnection.getConnection();
              PreparedStatement preparedStatement = connection.prepareStatement(query)) {
 

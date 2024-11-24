@@ -1,13 +1,26 @@
 package com.example.diemdanhsv.models;
 
+import java.time.LocalDateTime;
+
 public class Student {
     private int id;
     private String name;
     private int userId;
     private String gender;
     private String status;
+    private LocalDateTime date;
 
-    // Constructor with all fields
+    // Constructor with all fields including date
+    public Student(int id, String name, int userId, String gender, String status, LocalDateTime date) {
+        this.id = id;
+        this.name = name;
+        this.userId = userId;
+        this.gender = gender;
+        this.status = status;
+        this.date = date;
+    }
+
+    // Existing constructor
     public Student(int id, String name, int userId, String gender, String status) {
         this.id = id;
         this.name = name;
@@ -16,6 +29,12 @@ public class Student {
         this.status = status;
     }
 
+    public Student(int id, String name, String gender, String status) {
+        this.id = id;
+        this.name = name;
+        this.gender = gender;
+        this.status = status;
+    }
     // Default constructor
     public Student() {
     }
@@ -56,8 +75,15 @@ public class Student {
     public String getStatus() {
         return status;
     }
-
     public void setStatus(String status) {
         this.status = status;
+    }
+
+    public LocalDateTime getDate() {
+        return date;
+    }
+
+    public void setDate(LocalDateTime date) {
+        this.date = date;
     }
 }

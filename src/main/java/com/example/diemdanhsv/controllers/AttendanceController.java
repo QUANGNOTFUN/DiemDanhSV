@@ -11,9 +11,13 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
-import javafx.scene.layout.HBox;
+import javafx.scene.layout.FlowPane;
+
+import javafx.scene.control.ToggleGroup;
 
 import java.net.URL;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.Optional;
 import java.util.ResourceBundle;
 
@@ -26,9 +30,14 @@ public class AttendanceController implements Initializable {
     public TextField userIdField;
     @FXML
     public TextField genderField;
+    @FXML
+    public ComboBox genderBox;
+    @FXML
+    public TextField emailField;
+
 
     @FXML
-    private HBox courseButtonContainer;
+    private FlowPane courseButtonContainer;
     @FXML
     private TableView<Student> attendanceTable;
     @FXML
@@ -38,27 +47,59 @@ public class AttendanceController implements Initializable {
     @FXML
     private TableColumn<Student, String> genderColumn;
     @FXML
+    private TableColumn<Student, LocalDateTime> dateColumn;
+    @FXML
     private TableColumn<Student, String> statusColumn;
 
     private ObservableList<Student> studentList;
 
     private AttendanceRepository attendanceRepository;
 
+    @FXML
+    private ToggleGroup genderGroup;
+
+    private int currentCourseId;
+
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         attendanceRepository = new AttendanceRepository();
-
         idColumn.setCellValueFactory(new PropertyValueFactory<>("id"));
         nameColumn.setCellValueFactory(new PropertyValueFactory<>("name"));
         genderColumn.setCellValueFactory(new PropertyValueFactory<>("gender"));
-        statusColumn.setCellValueFactory(new PropertyValueFactory<>("status"));
+        dateColumn.setCellValueFactory(new PropertyValueFactory<>("date"));
 
-        studentList = FXCollections.observableArrayList();
-        attendanceTable.setItems(studentList);
+        statusColumn.setCellFactory(param -> new TableCell<>() {
+            private final ComboBox<String> comboBox = new ComboBox<>(
+                    FXCollections.observableArrayList("present", "late", "absent")); // Các giá trị trạng thái
+            {
+                comboBox.setOnAction(event -> {
+                    Student data = getTableView().getItems().get(getIndex());
+                    String newStatus = comboBox.getValue();
+                    data.setStatus(newStatus); // Cập nhật status trong đối tượng `Student`
+                    // Lưu cập nhật vào cơ sở dữ liệu
+                    boolean isUpdated = attendanceRepository.updateStatus(data.getId(), newStatus, currentCourseId);
+                });
+            }
 
-        loadCourses();
-        loadAttendanceData();
+            @Override
+            protected void updateItem(String item, boolean empty) {
+                super.updateItem(item, empty);
+                if (empty || getIndex() >= getTableView().getItems().size()) {
+                    setGraphic(null);
+                } else {
+                    Student data = getTableView().getItems().get(getIndex());
+                    comboBox.setValue(data.getStatus()); // Lấy giá trị status từ đối tượng `Student`
+                    setGraphic(comboBox);
+                }
+            }
+        });
+
+        studentList = FXCollections.observableArrayList(); // Khởi tạo danh sách rỗng
+        attendanceTable.setItems(studentList); // Gắn danh sách rỗng vào bảng
+
+        loadCourses(); // Chỉ tải các nút khóa học
     }
+
 
     private void loadAttendanceData() {
         ObservableList<Attendance> attendanceList = attendanceRepository.getAttendanceList();
@@ -68,7 +109,8 @@ public class AttendanceController implements Initializable {
                     attendance.getStudentName(),
                     attendance.getStudentId(), // Giá trị userId
                     attendance.getGender(),
-                    attendance.getStatus()
+                    attendance.getStatus(),
+                    attendance.getDate().atStartOfDay()
             );
             studentList.add(student);
         }
@@ -76,20 +118,28 @@ public class AttendanceController implements Initializable {
 
     public void add(ActionEvent e) {
         try {
-            Student newStudent = new Student();
-            newStudent.setId(Integer.parseInt(idField.getText()));
-            newStudent.setName(nameField.getText());
-            newStudent.setUserId(Integer.parseInt(userIdField.getText()));
-            newStudent.setGender(genderField.getText());
+            // Lấy ID sinh viên từ trường nhập liệu
+            int studentId = Integer.parseInt(idField.getText());
 
-            studentList.add(newStudent);
 
+            int courseId = currentCourseId; // Lấy courseId hiện tại
+            LocalDate date = LocalDate.now(); // Ngày hiện tại
+            String status = "absent"; // Trạng thái mặc định
+
+            // Thêm đối tượng Attendance vào cơ sở dữ liệu
+            boolean isAdded = attendanceRepository.addAttendance(studentId, currentCourseId,date,status);
+
+            if (isAdded) {
+                // Nếu thêm thành công, cập nhật danh sách sinh viên
+                showAlert("Success", "Student added to attendance successfully.");
+            } else {
+                showAlert("Error", "Failed to add student to attendance.");
+            }
+
+            // Xóa trường nhập liệu
             idField.clear();
-            nameField.clear();
-            userIdField.clear();
-            genderField.clear();
         } catch (NumberFormatException ex) {
-            showAlert("Input Error", "Please enter valid data!");
+            showAlert("Input Error", "Please enter a valid student ID!");
         }
     }
 
@@ -107,7 +157,7 @@ public class AttendanceController implements Initializable {
         Optional<ButtonType> result = confirmationAlert.showAndWait();
 
         if (result.isPresent() && result.get() == ButtonType.OK) {
-            boolean isDeleted = attendanceRepository.deleteStudent(selectedStudent.getId());
+            boolean isDeleted = attendanceRepository.deleteStudent(selectedStudent.getId(), currentCourseId);
 
             if (isDeleted) {
                 studentList.remove(selectedStudent);
@@ -122,12 +172,19 @@ public class AttendanceController implements Initializable {
         CourseRepository queryHandle = new CourseRepository();
         ObservableList<String> courses = queryHandle.getCourses();
 
-        courseButtonContainer.getChildren().clear();
+        courseButtonContainer.getChildren().clear(); // Xóa các nút cũ.
 
         for (String course : courses) {
             Button courseButton = new Button(course);
-            courseButton.setPrefWidth(300);
+
+            // Cài đặt nút để hiển thị nội dung đầy đủ.
+            courseButton.setStyle("-fx-font-size: 14px; -fx-padding: 5;");
+            courseButton.setMaxWidth(Double.MAX_VALUE); // Tự động giãn theo nội dung.
+
+            // Sự kiện khi nhấn nút.
             courseButton.setOnAction(event -> handleCourseSelection(course));
+
+            // Thêm nút vào container.
             courseButtonContainer.getChildren().add(courseButton);
         }
 
@@ -136,13 +193,14 @@ public class AttendanceController implements Initializable {
         }
     }
 
+
     private void handleCourseSelection(String course) {
         CourseRepository courseRepository = new CourseRepository();
-        int courseId = courseRepository.getCourseIdByName(course);
+        currentCourseId = courseRepository.getCourseIdByName(course);
 
-        ObservableList<Attendance> attendanceList = attendanceRepository.getAttendanceByCourseId(courseId);
+        ObservableList<Attendance> attendanceList = attendanceRepository.getAttendanceByCourseId(currentCourseId);
 
-        studentList.clear();
+        studentList.clear(); // Xóa danh sách cũ trước khi tải mới
 
         for (Attendance attendance : attendanceList) {
             Student student = new Student(
@@ -155,6 +213,7 @@ public class AttendanceController implements Initializable {
             studentList.add(student);
         }
     }
+
 
     private void showAlert(String title, String message) {
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
