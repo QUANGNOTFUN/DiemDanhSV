@@ -45,3 +45,10 @@ Hệ thống cung cấp các tính năng như đăng nhập cho giáo vụ, qu�
    
    ```bash
    git clone https://github.com/yourusername/DiemDanhSV.git
+   Thành viên
+Dưới đây là các thành viên tham gia vào dự án:
+
+Tên	Vai trò	GitHub
+Trần Nguyễn Thành Hiển	Quản lý dự án, Attendance For teacher Phát triển Backend	@nguyenvana
+Phạm Đăng Quang	Phát triển Attendance For student	@tranthib
+Nguyễn Trường AN	Login, logout	@leminhc
