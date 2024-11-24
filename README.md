@@ -54,7 +54,7 @@ Dưới đây là các thành viên tham gia vào dự án:
 | Tên                        | Vai trò                            | GitHub               |
 |----------------------------|------------------------------------|----------------------|
 | Trần Nguyễn Thành Hiển     | Quản lý dự án, Attendance For teacher | @ThanhHienIT2004      |
-| Phạm Đăng Quang            | Phát triển Attendance For student   | @TruongAn-28          |
+  | Phạm Đăng Quang            | Attendance For student   | @QUANGNOTFUN          |
 | Nguyễn Trường AN           | Login, logout                      | @TruongAn-28          |
 
 
