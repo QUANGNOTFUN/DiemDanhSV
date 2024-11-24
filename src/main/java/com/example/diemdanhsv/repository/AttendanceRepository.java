@@ -1,6 +1,6 @@
 package com.example.diemdanhsv.repository;
 
-import com.example.diemdanhsv.database.DatabaseConnection;
+import com.example.diemdanhsv.databaseConnect.DatabaseConnection;
 import com.example.diemdanhsv.models.Attendance;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -9,7 +9,6 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.time.LocalDate;
 
 public class AttendanceRepository {
 

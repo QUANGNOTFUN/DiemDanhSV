@@ -13,4 +13,5 @@ module com.example.diemdanhsv {
 
 
     exports com.example.diemdanhsv;
+    exports com.example.diemdanhsv.controllers;
 }

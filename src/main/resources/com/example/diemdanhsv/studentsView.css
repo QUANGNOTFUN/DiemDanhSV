@@ -1,0 +1,76 @@
+/* studentsView.css */
+
+/* Đặt màu nền cho toàn bộ BorderPane */
+.border-pane {
+    -fx-background-color: #f0f4f8; /* Màu nền sáng nhẹ */
+}
+
+/* Đặt kiểu cho VBox bên trái */
+.left-pane {
+    -fx-background-color: #ffffff; /* Màu nền trắng cho sidebar */
+    -fx-padding: 15; /* Khoảng cách bên trong */
+    -fx-spacing: 10; /* Khoảng cách giữa các thành phần */
+    -fx-border-color: #cccccc; /* Đường viền xám */
+    -fx-border-width: 1; /* Độ dày đường viền */
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.1), 5, 0.0, 0, 0); /* Hiệu ứng bóng */
+}
+
+/* Đặt kiểu cho VBox chứa thông tin sinh viên */
+.info-box {
+    -fx-spacing: 10; /* Khoảng cách giữa các thành phần */
+}
+
+/* Đặt kiểu cho tiêu đề */
+.title-label {
+    -fx-font-size: 18px; /* Kích thước chữ */
+    -fx-font-weight: bold; /* Đậm chữ */
+    -fx-text-fill: #333; /* Màu chữ tối */
+}
+
+/* Đặt kiểu cho các Label thông tin sinh viên */
+.info-label {
+    -fx-font-size: 16px; /* Kích thước chữ */
+    -fx-font-weight: bold; /* Đậm chữ */
+    -fx-text-fill: #333; /* Màu chữ tối */
+}
+
+/* Đặt kiểu cho ComboBox */
+.subject-combo {
+    -fx-background-color: #ffffff; /* Màu nền trắng */
+    -fx-border-color: #4CAF50; /* Đường viền xanh lá */
+    -fx-border-radius: 5; /* Bo góc */
+    -fx-padding: 5; /* Khoảng cách bên trong */
+}
+
+/* Đặt kiểu cho Button */
+.logout-button {
+    -fx-background-color: #4CAF50; /* Màu nền xanh lá */
+    -fx-text-fill: white; /* Màu chữ trắng */
+    -fx-padding: 10; /* Khoảng cách bên trong */
+    -fx-font-size: 14px; /* Kích thước chữ */
+    -fx-border-radius: 5; /* Bo góc */
+    -fx-background-radius: 5; /* Bo góc */
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.2), 5, 0.0, 0, 0); /* Hiệu ứng bóng */
+}
+
+/* Đặt kiểu cho TableView */
+.data-table {
+    -fx-background-color: #ffffff; /* Màu nền trắng */
+    -fx-border-color: #cccccc; /* Đường viền xám */
+    -fx-border-radius: 5; /* Bo góc */
+}
+
+/* Đặt kiểu cho các TableColumn */
+.table-column {
+    -fx-text-fill: #333; /* Màu chữ tối */
+}
+
+/* Đặt kiểu cho các hàng trong TableView */
+.table-view .table-row-cell {
+    -fx-background-color: transparent; /* Nền trong suốt */
+}
+
+/* Đặt kiểu cho hàng khi hover */
+.table-view .table-row-cell:hover {
+    -fx-background-color: #e0e0e0; /* Màu nền khi hover */
+}

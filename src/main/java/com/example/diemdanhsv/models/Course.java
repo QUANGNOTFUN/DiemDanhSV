@@ -9,6 +9,8 @@ public class Course {
     private LocalDateTime createdAt; // Sử dụng LocalDateTime thay vì Timestamp
     private LocalDateTime updatedAt; // Sử dụng LocalDateTime thay vì Timestamp
 
+    public  Course(){}
+
     // Constructor
     public Course(int id, String name, String code, LocalDateTime createdAt, LocalDateTime updatedAt) {
         this.id = id;

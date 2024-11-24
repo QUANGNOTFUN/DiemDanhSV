@@ -1,4 +1,4 @@
-package com.example.diemdanhsv.database;
+package com.example.diemdanhsv.databaseConnect;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
