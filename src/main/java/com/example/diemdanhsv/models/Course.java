@@ -1,26 +1,32 @@
 package com.example.diemdanhsv.models;
 
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 
 public class Course {
     private int id;
     private String name;
-    private String code;
-    private LocalDateTime createdAt; // Sử dụng LocalDateTime thay vì Timestamp
-    private LocalDateTime updatedAt; // Sử dụng LocalDateTime thay vì Timestamp
+    private LocalDate startDate; // Dùng LocalDate thay vì String
+    private LocalDate endDate;
+    private String day;
+    private String academicYear;
+    private int semester;
 
-    public  Course(){}
-
-    // Constructor
-    public Course(int id, String name, String code, LocalDateTime createdAt, LocalDateTime updatedAt) {
-        this.id = id;
-        this.name = name;
-        this.code = code;
-        this.createdAt = createdAt;
-        this.updatedAt = updatedAt;
+    // Constructor không tham số
+    public Course() {
     }
 
-    // Getter and Setter Methods
+    // Constructor đầy đủ tham số
+    public Course(int id, String name, LocalDate startDate, LocalDate endDate, String day, String academicYear, int semester) {
+        this.id = id;
+        this.name = name;
+        this.startDate = startDate;
+        this.endDate = endDate;
+        this.day = day;
+        this.academicYear = academicYear;
+        this.semester = semester;
+    }
+
+    // Getter và Setter
     public int getId() {
         return id;
     }
@@ -37,27 +43,56 @@ public class Course {
         this.name = name;
     }
 
-    public String getCode() {
-        return code;
+    public LocalDate getStartDate() {
+        return startDate;
     }
 
-    public void setCode(String code) {
-        this.code = code;
+    public void setStartDate(LocalDate startDate) {
+        this.startDate = startDate;
     }
 
-    public LocalDateTime getCreatedAt() {
-        return createdAt;
+    public LocalDate getEndDate() {
+        return endDate;
     }
 
-    public void setCreatedAt(LocalDateTime createdAt) {
-        this.createdAt = createdAt;
+    public void setEndDate(LocalDate endDate) {
+        this.endDate = endDate;
     }
 
-    public LocalDateTime getUpdatedAt() {
-        return updatedAt;
+    public String getDay() {
+        return day;
     }
 
-    public void setUpdatedAt(LocalDateTime updatedAt) {
-        this.updatedAt = updatedAt;
+    public void setDay(String day) {
+        this.day = day;
+    }
+
+    public String getAcademicYear() {
+        return academicYear;
+    }
+
+    public void setAcademicYear(String academicYear) {
+        this.academicYear = academicYear;
+    }
+
+    public int getSemester() {
+        return semester;
+    }
+
+    public void setSemester(int semester) {
+        this.semester = semester;
+    }
+
+    @Override
+    public String toString() {
+        return "Course{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", startDate=" + startDate +
+                ", endDate=" + endDate +
+                ", day='" + day + '\'' +
+                ", academicYear='" + academicYear + '\'' +
+                ", semester=" + semester +
+                '}';
     }
 }

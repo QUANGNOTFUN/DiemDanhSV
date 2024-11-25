@@ -2,15 +2,15 @@ package com.example.diemdanhsv.repository;
 
 import com.example.diemdanhsv.databaseConnect.DatabaseConnection;
 import com.example.diemdanhsv.models.Course;
-import com.example.diemdanhsv.viewModels.StudentsViewModel;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.concurrent.Task;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 
 public class CourseRepository
 {
@@ -33,57 +33,45 @@ public class CourseRepository
         return subjects;
     }
 
-    // lấy danh sách môn học cảu sinh viên
-    public Task<StudentsViewModel> getCourseLoginAsync(int studentId) {
-        return new Task<>() {
-            @Override
-            protected StudentsViewModel call() throws Exception {
-                String query = "Select course_id From course_students Where student_id = ?";
-                StudentsViewModel studentsViewModel = new StudentsViewModel();
+    // lấy danh sách môn học của sinh viên đăng nhập
+    public List<Course> getCourseLogin(int studentId, int semester, Connection conn) {
+        String courseIdQuery = "Select course_id From course_students Where student_id = ?";
+        List<Course> courses = new ArrayList<>();
 
-                try (Connection conn = DatabaseConnection.getConnection();
-                     PreparedStatement stmt = conn.prepareStatement(query)) {
+        // Lấy coureId từ student_coures
+        try (PreparedStatement coursesIdStmt = conn.prepareStatement(courseIdQuery)) {
+            coursesIdStmt.setInt(1, studentId);
 
-                    stmt.setInt(1, studentId);
+            // Lấy couresName từ course
+            try(ResultSet coursesIdRs = coursesIdStmt.executeQuery()) {
+                if (coursesIdRs.next()) {
+                    int courseId = coursesIdRs.getInt("course_id");
+                    String coursesQurey = "Select name, start_date, end_date, day, academic_year From course Where id = ? And semester = ?";
 
-                    try (ResultSet rs = stmt.executeQuery()) {
-                        // Duyệt qua danh sách khóa học của học sinh đăng nhập
-                        while (rs.next()) {  // Nếu có nhiều môn học, dùng vòng lặp while thay vì if
-                            String coursesQuery = "Select name, created_at, updated_at From courses Where id = ?";
-                            try (PreparedStatement coursesStmt = conn.prepareStatement(coursesQuery)) {
-                                coursesStmt.setInt(1, rs.getInt("course_id"));
+                    try(PreparedStatement coursesStmt = conn.prepareStatement(coursesQurey)) {
+                        coursesStmt.setInt(1, courseId);
+                        coursesStmt.setInt(2, semester);
 
-                                try (ResultSet courses = coursesStmt.executeQuery()) {
-                                    if (courses.next()) {
-                                        Course newCourse = new Course();
-                                        newCourse.setName(courses.getString("name"));
-                                        newCourse.setCreatedAt((courses.getTimestamp("created_at")).toLocalDateTime());
-                                        newCourse.setUpdatedAt((courses.getTimestamp("updated_at")).toLocalDateTime());
-
-                                        studentsViewModel.addCourse(newCourse);
-                                    }
-                                } catch (SQLException e) {
-                                    System.err.println("Lỗi khi truy vấn thông tin khóa học: " + e.getMessage());
-                                    e.printStackTrace();  // In chi tiết ngoại lệ
-                                }
-                            } catch (SQLException e) {
-                                System.err.println("Lỗi khi chuẩn bị câu lệnh truy vấn khóa học: " + e.getMessage());
-                                e.printStackTrace();  // In chi tiết ngoại lệ
+                        try (ResultSet courseRs = coursesStmt.executeQuery()) {
+                            if (courseRs.next()) {
+                                Course newCourse = new Course();
+                                newCourse.setId(courseId);
+                                newCourse.setName(courseRs.getString("name"));
+                                newCourse.setStartDate(courseRs.getDate("start_date").toLocalDate());
+                                newCourse.setEndDate(courseRs.getDate("end_date").toLocalDate());
+                                newCourse.setDay(courseRs.getString("day"));
+                                newCourse.setAcademicYear(courseRs.getString("academic_year"));
+                                courses.add(newCourse);
                             }
                         }
-                    } catch (SQLException e) {
-                        System.err.println("Lỗi khi truy vấn dữ liệu khóa học của sinh viên: " + e.getMessage());
-                        e.printStackTrace();  // In chi tiết ngoại lệ
                     }
-                } catch (SQLException e) {
-                    System.err.println("Lỗi khi kết nối cơ sở dữ liệu hoặc truy vấn sinh viên: " + e.getMessage());
-                    e.printStackTrace();  // In chi tiết ngoại lệ
-                } catch (Exception e) {
-                    System.err.println("Lỗi không xác định: " + e.getMessage());
-                    e.printStackTrace();  // In chi tiết ngoại lệ
                 }
-                return studentsViewModel;
             }
-        };
+
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+
+        return courses;
     }
 }

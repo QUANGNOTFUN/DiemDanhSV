@@ -3,7 +3,6 @@ package com.example.diemdanhsv.models;
 public class Student {
     private int id;
     private String name;
-    private String studentClass;
     private int userId;
     private String gender;
     private String status;

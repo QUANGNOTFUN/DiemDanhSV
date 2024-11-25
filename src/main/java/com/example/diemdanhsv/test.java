@@ -11,7 +11,7 @@ public class test extends Application {
     @Override
     public void start(Stage primaryStage) throws Exception {
         // Tải file FXML
-        Parent root = FXMLLoader.load(getClass().getResource("/com/example/diemdanhsv/StudentsView.fxml"));
+        Parent root = FXMLLoader.load(getClass().getResource("StudentsView.fxml"));
         primaryStage.setTitle("Thông tin điểm danh học sinh");
         
         // Thiết lập scene với kích thước mặc định

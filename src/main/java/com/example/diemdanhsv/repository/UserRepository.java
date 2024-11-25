@@ -1,6 +1,6 @@
 package com.example.diemdanhsv.repository;
 
-import com.example.diemdanhsv.database.DatabaseConnection;
+import com.example.diemdanhsv.databaseConnect.DatabaseConnection;
 import com.example.diemdanhsv.models.User;
 
 import java.sql.Connection;
