@@ -4,6 +4,7 @@ import com.example.diemdanhsv.database.DatabaseConnection;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
+import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import java.sql.Connection;
@@ -18,6 +19,8 @@ public class MainApp extends Application {
         // Tải giao diện FXML cho Login
         FXMLLoader loader = new FXMLLoader(getClass().getResource("LoginView.fxml"));
         VBox root = loader.load();
+/*        FXMLLoader loader = new FXMLLoader(getClass().getResource("MainMenu.fxml"));
+        AnchorPane root= loader.load();*/
 
         Scene scene = new Scene(root);
 

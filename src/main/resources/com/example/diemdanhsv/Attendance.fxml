@@ -16,11 +16,8 @@
     <VBox layoutX="14.0" layoutY="95.0" prefHeight="240.0" prefWidth="250" spacing="15">
         <Label style="-fx-font-size: 20px; -fx-font-weight: bold;" text="Thông tin sinh viên" />
         <Label style="-fx-font-size: 14px; -fx-font-weight: bold;" text="Thêm sinh viên vào khóa học hiện tại" />
-      <Label text="Mã số sinh viên:" />
-
+        <Label text="Mã số sinh viên:" />
         <TextField fx:id="idField" promptText="Mã số sinh viên" />
-        
-        <HBox alignment="CENTER_LEFT" spacing="10" />
 
         <HBox alignment="CENTER" spacing="10">
             <Button onAction="#add" style="-fx-font-size: 14px;" text="Thêm" />

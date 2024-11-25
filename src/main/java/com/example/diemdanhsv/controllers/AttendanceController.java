@@ -30,17 +30,6 @@ public class AttendanceController implements Initializable {
 
     @FXML
     public TextField idField;
-    @FXML
-    public TextField nameField;
-    @FXML
-    public TextField userIdField;
-    @FXML
-    public TextField genderField;
-    @FXML
-    public ComboBox genderBox;
-    @FXML
-    public TextField emailField;
-
 
     @FXML
     private FlowPane courseButtonContainer;
