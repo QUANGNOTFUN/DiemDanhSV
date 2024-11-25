@@ -1,7 +1,6 @@
 package com.example.diemdanhsv.viewModels;
 
-import com.example.diemdanhsv.databaseConnect.DatabaseConnection;
-import com.example.diemdanhsv.models.Course;
+import com.example.diemdanhsv.models.Attendance;
 import com.example.diemdanhsv.repository.AttendanceRepository;
 import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.ObjectProperty;
@@ -13,11 +12,8 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.scene.control.Button;
 
-import java.sql.Connection;
-import java.sql.SQLException;
 import java.time.LocalDate;
 import java.util.List;
-import java.util.Objects;
 
 public class AttendanceRecordViewModel {
     private final IntegerProperty courseId = new SimpleIntegerProperty();
@@ -31,24 +27,22 @@ public class AttendanceRecordViewModel {
     public AttendanceRecordViewModel() {}
 
     // Hàm gọi để tạo dữ liệu cột
-    public ObservableList<AttendanceRecordViewModel> createDataColumnProperty(Course courseData) {
+    public ObservableList<AttendanceRecordViewModel> getAttendanceOfCourseVM(int studentId, int courseId) {
         ObservableList<AttendanceRecordViewModel> data = FXCollections.observableArrayList();
-        LocalDate startCourse = courseData.getStartDate();
-        LocalDate endCourse = courseData.getEndDate();
-        int sessionCounter = 1;
+        List<Attendance> attendanceList = _attendanceRepo.getAttendanceOfCourse(studentId, courseId);
+        LocalDate timeNow = LocalDate.now();
 
-        while (!startCourse.isAfter(endCourse)) {
-            // Tạo giá trị cho cột
-            AttendanceRecordViewModel record = new AttendanceRecordViewModel();
-            record.setSession(sessionCounter++);
-            record.setDate(startCourse);
-            record.setCourseId(courseData.getId());
+        for (Attendance attendance : attendanceList) {
+            AttendanceRecordViewModel newAttendanceVM = new AttendanceRecordViewModel();
+            newAttendanceVM.setCourseId(attendance.getCourseId());
+            newAttendanceVM.setSession(attendance.getSession());
+            newAttendanceVM.setDate(attendance.getDate());
+            newAttendanceVM.setStatus(attendance.getStatus().equals("present") ? "Present" : "Absent");
+            if (!attendance.getStatus().equals("present") || !attendance.getDate().equals(timeNow)) {
+                newAttendanceVM.setButton(new Button());
+            }
 
-            // Thêm vào danh sách
-            data.add(record);
-
-            // Tăng thêm 7 ngày
-            startCourse = startCourse.plusDays(7);
+            data.add(newAttendanceVM);
         }
 
         return data;

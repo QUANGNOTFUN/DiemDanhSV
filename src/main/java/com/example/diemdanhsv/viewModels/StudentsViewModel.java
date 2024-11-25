@@ -1,6 +1,5 @@
 package com.example.diemdanhsv.viewModels;
 
-import com.example.diemdanhsv.databaseConnect.DatabaseConnection;
 import com.example.diemdanhsv.models.Course;
 import com.example.diemdanhsv.models.Student;
 import com.example.diemdanhsv.repository.CourseRepository;
@@ -9,16 +8,14 @@ import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
-import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
-import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.List;
 
 public class StudentsViewModel {
-    private final StringProperty id = new SimpleStringProperty();
+    private final IntegerProperty id = new SimpleIntegerProperty();
     private final StringProperty name = new SimpleStringProperty();
     private final IntegerProperty semester = new SimpleIntegerProperty();
     private final ObservableList<Course> courses = FXCollections.observableArrayList();
@@ -27,51 +24,36 @@ public class StudentsViewModel {
 
     public StudentsViewModel() {}
 
-    // hàm gọi repos
-    public void setInfoLogin(Student student) {
-        this.id.set("MSSV: " + student.getId());
-        this.name.set("Tên: " + student.getName());
-    }
-    public void setCoursesLogin(List<Course> coursesList) {
-        courses.clear();
-        courses.addAll(coursesList);
-//        System.out.println(courses);
-    }
-
     // Lấy thông tin sinh viên và các môn học
-    public void getInfoLoginVM(int userId, int semester, Connection conn) throws SQLException {
+    public void getInfoLoginVM(int userId, int semester) throws SQLException {
         // Lấy thông tin sinh viên từ repository
-        Student student = _studentRepo.getInfoLogin(userId, conn);
-        List<Course> coursesList = _courseRepo.getCourseLogin(student.getId(), semester, conn);
+        Student student = _studentRepo.getInfoLogin(userId);
 
-        // Kiểm tra nếu thông tin sinh viên có tồn tại
-        if (student != null) {
-            setInfoLogin(student);
-            setCoursesLogin(coursesList);
-        } else {
-            throw new RuntimeException("Không tìm thấy sinh viên với ID: " + userId);
+        if (student == null) {
+            throw new RuntimeException("Không tìm thấy thông tin sinh viên với ID: " + userId);
         }
+
+        setId(student.getId());
+        setName(student.getName());
+
+        // Lấy danh sách các môn học của sinh viên trong học kỳ
+        List<Course> coursesList = _courseRepo.getCourseLogin(student.getId(), semester);
+
+        if (coursesList == null || coursesList.isEmpty()) {
+            throw new RuntimeException("Không có môn học nào cho sinh viên ID: " + student.getId() + " trong học kỳ " + semester);
+        }
+
+        setCourses(coursesList);
     }
 
     // get set
-    public String getId() {
-        return id.get();
-    }
-
-    public void setId(int id) {
-        this.id.set("MSSV: " + id); // Thêm tiền tố
-    }
-
-    public StringProperty idProperty() {
-        return id;
-    }
 
     public String getName() {
         return name.get();
     }
 
     public void setName(String name) {
-        this.name.set("Tên: " + name);
+        this.name.set(name);
     }
 
     public StringProperty nameProperty() {
@@ -90,7 +72,29 @@ public class StudentsViewModel {
         return courses;
     }
 
+    public Course getCourse(int id) {
+        for (Course course : this.courses) {
+            if (course.getId() == id) {
+                return course;
+            }
+        }
+        return null;
+    }
+
+    public void setCourses(List<Course> coursesList) {
+        this.courses.clear();
+        this.courses.addAll(coursesList);
+    }
+
     public void removeCourses() {
         this.courses.removeAll();
     }
+
+    public int getId() { return id.get(); }
+
+    public void setId(int id) {
+        this.id.set(id);
+    }
+
+    public IntegerProperty idProperty() { return id; }
 }

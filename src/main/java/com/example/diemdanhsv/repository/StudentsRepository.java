@@ -15,11 +15,12 @@ public class StudentsRepository {
     public StudentsRepository() {}
 
     // lấy thông tin sinh viên sau khi đăng nhập
-    public static Student getInfoLogin(int userId, Connection conn) throws SQLException {
+    public Student getInfoLogin(int userId) throws SQLException {
         String query = "SELECT id, name FROM students WHERE user_id = ?";
         Student student = new Student();
 
-        try (PreparedStatement stmt = conn.prepareStatement(query)) {
+        try (Connection conn = DatabaseConnection.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(query)) {
             stmt.setInt(1, userId);
 
             try (ResultSet rs = stmt.executeQuery()) {
@@ -29,6 +30,7 @@ public class StudentsRepository {
                 }
             }
         }
+
         return student; // Trả về Student hoặc null nếu không tìm thấy
     }
 }

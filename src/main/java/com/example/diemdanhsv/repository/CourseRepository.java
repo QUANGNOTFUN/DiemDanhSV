@@ -34,12 +34,13 @@ public class CourseRepository
     }
 
     // lấy danh sách môn học của sinh viên đăng nhập
-    public List<Course> getCourseLogin(int studentId, int semester, Connection conn) {
+    public List<Course> getCourseLogin(int studentId, int semester) {
         String courseIdQuery = "Select course_id From course_students Where student_id = ?";
         List<Course> courses = new ArrayList<>();
 
         // Lấy coureId từ student_coures
-        try (PreparedStatement coursesIdStmt = conn.prepareStatement(courseIdQuery)) {
+        try (Connection conn = DatabaseConnection.getConnection();
+            PreparedStatement coursesIdStmt = conn.prepareStatement(courseIdQuery)) {
             coursesIdStmt.setInt(1, studentId);
 
             // Lấy couresName từ course

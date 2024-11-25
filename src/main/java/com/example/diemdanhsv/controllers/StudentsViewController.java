@@ -1,17 +1,12 @@
 package com.example.diemdanhsv.controllers;
 
-import com.example.diemdanhsv.databaseConnect.DatabaseConnection;
 import com.example.diemdanhsv.models.Course;
-import com.example.diemdanhsv.models.Student;
 import com.example.diemdanhsv.viewModels.AttendanceRecordViewModel;
 import com.example.diemdanhsv.viewModels.StudentsViewModel;
-import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 
-import java.sql.Connection;
 import java.sql.SQLException;
 import java.time.LocalDate;
 import java.util.List;
@@ -52,88 +47,72 @@ public class StudentsViewController {
     @FXML
     public void initialize() {
         try {
-            // Tạo 1 kết nối cho khi chạy
-            Connection conn = DatabaseConnection.getConnection();
             int userId = 2;
             // Load dữ liệu ban đầu
-            loadStudentData(userId, 1, conn);
+            loadStudentView(userId, 1);
 
             // Đăng ký sự kiện thay đổi học kỳ
-            hk1ToggleButton.setOnAction(event -> handleSemesterChange(userId, conn));
-            hk2ToggleButton.setOnAction(event -> handleSemesterChange(userId, conn));
+            hk1ToggleButton.setOnAction(event -> handleSemesterChange(userId));
+            hk2ToggleButton.setOnAction(event -> handleSemesterChange(userId));
 
-            // Đăng ký sự kiện chọn môn học từ ComboBox
-            listCourse.setOnAction(event -> handleCourseSelection(userId));
         } catch (Exception e) {
             System.err.println("Lỗi khi khởi tạo: " + e.getMessage());
         }
     }
 
+    // Phương thức tải dữ liệu sinh viên từ ViewModel
+    private void loadStudentView(int userId, int semester) throws SQLException {
+        loadInfoUser(userId, semester);
+    }
+
     // Ràng buộc dữ liệu từ StudentViewModel vào UI
-    private void bindStudentsVM() {
-        id.textProperty().bind(studentsVM.idProperty());
-        name.textProperty().bind(studentsVM.nameProperty());
+    private void loadInfoUser(int userId, int semester) throws SQLException {
+        studentsVM.getInfoLoginVM(userId, semester);
+
+        // Cập nhật vào label
+        id.setText("MSSV" + studentsVM.getId());
+        name.setText("Tên: " + studentsVM.getName());
+
+        // cập nhật vào combo box courses
+        loadCourseList();
     }
 
     // Phương thức cập nhật danh sách môn học trong ComboBox
-    private void updateCourseList() {
+    private void loadCourseList() {
         List<Course> courses = studentsVM.getCourses();
-//        System.out.println(courses);
-        listCourse.getItems().clear(); // Xóa danh sách cũ
+
+        // Xóa các mục cũ và thêm các mục mới
+        listCourse.getItems().clear();
         for (Course course : courses) {
             listCourse.getItems().add(course.getName());
         }
+
+        // Gắn sự kiện khi người dùng chọn một môn học
+        listCourse.setOnAction(event -> {
+            // Lấy môn học được chọn
+            String selectedCourseName = listCourse.getSelectionModel().getSelectedItem();
+
+            // Tìm đối tượng Course tương ứng
+            Course selectedCourse = courses.stream()
+                    .filter(course -> course.getName().equals(selectedCourseName))
+                    .findFirst()
+                    .orElse(null);
+
+            if (selectedCourse != null) {
+                configureTableColumns();
+                attendanceTable.setItems(attendanceVM.getAttendanceOfCourseVM(studentsVM.getId(), selectedCourse.getId()));
+            }
+        });
     }
+
 
     // Phương thức thêm data vào table view
     private void configureTableColumns() {
         // Cấu hình các cột
         sessionColumn.setCellValueFactory(cellData -> cellData.getValue().sessionProperty().asObject());
         dateColumn.setCellValueFactory(cellData -> cellData.getValue().dateProperty());
-        // Cập nhật trạng thái trong cột status
-        statusColumn.setCellValueFactory(cellData -> {
-            AttendanceRecordViewModel record = cellData.getValue();
-            int studentId = Integer.parseInt(studentsVM.getId().replaceAll("\\D+", "")); // Lấy ID sinh viên
-
-            // Kiểm tra nếu trạng thái điểm danh đã được ghi nhận
-            if (attendanceVM.checkAttandanceVM(record, studentId)) {
-                // Nếu điểm danh, trạng thái sẽ là Present
-                return new SimpleStringProperty("Present");
-            } else {
-                // Nếu không điểm danh, trạng thái sẽ là Absent
-                return new SimpleStringProperty("Absent");
-            }
-        });
-        // Điều chỉnh buttonColumn dựa trên điều kiện
-        buttonColumn.setCellFactory(column -> new TableCell<>() {
-            private final Button actionButton = new Button("Điểm danh");
-
-            @Override
-            protected void updateItem(Button button, boolean empty) {
-                super.updateItem(button, empty);
-
-                if (empty || getTableRow() == null || getTableRow().getItem() == null) {
-                    setGraphic(null);
-                    return;
-                }
-
-                AttendanceRecordViewModel record = getTableRow().getItem();
-                LocalDate recordDate = record.getDate();
-
-                // lấy id từ studentVM
-                int studentId = Integer.parseInt(studentsVM.getId().replaceAll("\\D+", ""));
-
-                // Kiểm tra nếu ngày khớp với ngày hiện tại
-                if (recordDate != null && recordDate.equals(LocalDate.now())) {
-                    if(!attendanceVM.checkAttandanceVM(record, studentId)) {
-                        actionButton.setOnAction(e -> handleButtonClick(record, studentId)); // Xử lý nút
-                        setGraphic(actionButton);
-                    }
-                } else {
-                    setGraphic(null); // Ẩn nút
-                }
-            }
-        });
+        statusColumn.setCellValueFactory(cellData -> cellData.getValue().statusProperty());
+        buttonColumn.setCellValueFactory(cellData -> cellData.getValue().buttonProperty());
 
         // Đảm bảo danh sách ObservableList được liên kết với TableView
         attendanceTable.setItems(FXCollections.observableArrayList());
@@ -145,19 +124,12 @@ public class StudentsViewController {
         record.setStatus("Present");
     }
 
-    // Phương thức tải dữ liệu sinh viên từ ViewModel
-    private void loadStudentData(int userId, int semester, Connection conn) throws SQLException {
-        studentsVM.getInfoLoginVM(userId, semester, conn);
-        bindStudentsVM();
-        updateCourseList();
-    }
-
     // Xử lý sự kiện thay đổi học kỳ
-    private void handleSemesterChange(int userId, Connection conn) {
+    private void handleSemesterChange(int userId) {
         int semester = selectedSemester();
 
         try {
-            loadStudentData(userId, semester, conn);
+            loadStudentView(userId, semester);
             hk1ToggleButton.setSelected(false);
             hk2ToggleButton.setSelected(false);
         } catch (SQLException e) {
@@ -167,12 +139,7 @@ public class StudentsViewController {
 
     // Phương thức xác định học kỳ được chọn
     private int selectedSemester() {
-        if (hk1ToggleButton.isSelected()) {
-            return 1;
-        } else if (hk2ToggleButton.isSelected()) {
-            return 2;
-        }
-        return 0;
+        return hk1ToggleButton.isSelected() ? 1 : 2;
     }
 
     // Hiển thị thông báo lỗi
@@ -181,31 +148,5 @@ public class StudentsViewController {
         alert.setTitle(title);
         alert.setContentText(message);
         alert.showAndWait();
-    }
-
-    // Xử lý sự kiện chọn môn học từ ComboBox
-    private void handleCourseSelection(int userId) {
-        // Lấy tên môn học đã chọn từ ComboBox
-        String selectedCourse = listCourse.getValue();
-        List<Course> courses = studentsVM.getCourses();
-
-        // Cập nhật titleSubject với tên môn học đã chọn
-        if (selectedCourse != null) {
-            titleSubject.setText("Môn: " + selectedCourse);
-            for (Course course : courses) {
-                if (Objects.equals(course.getName(), selectedCourse)) {
-                    loadAttendanceSubject(course);
-                }
-            }
-        }
-    }
-
-    // Cập nhật thông tin của môn được chọn
-    private void loadAttendanceSubject(Course course) {
-        ObservableList<AttendanceRecordViewModel> data = attendanceVM.createDataColumnProperty(course);
-
-        // Hiện giá trị lên bảng
-        configureTableColumns();
-        attendanceTable.setItems(data);
     }
 }

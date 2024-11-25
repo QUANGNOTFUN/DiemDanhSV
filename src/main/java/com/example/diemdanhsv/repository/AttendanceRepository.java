@@ -7,7 +7,8 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
 import java.sql.*;
-import java.util.Objects;
+import java.util.ArrayList;
+import java.util.List;
 
 public class AttendanceRepository {
 
@@ -41,6 +42,33 @@ public class AttendanceRepository {
         }
 
         return attendanceList;
+    }
+    // lấy danh sách điểm danh của học sinh đang học
+    public List<Attendance> getAttendanceOfCourse(int studentId, int courseId) {
+        String query = "SELECT * FROM attendance WHERE student_id = ? AND course_id = ?";
+        List<Attendance> attendances = new ArrayList<>();
+        try(Connection conn = DatabaseConnection.getConnection();
+            PreparedStatement stmt = conn.prepareStatement(query)) {
+            stmt.setInt(1, studentId);
+            stmt.setInt(2, courseId);
+
+            try(ResultSet rs = stmt.executeQuery()) {
+                while (rs.next()) {
+                    Attendance newAttendance = new Attendance();
+                    newAttendance.setStudentId(rs.getInt("student_id"));
+                    newAttendance.setCourseId(rs.getInt("course_id"));
+                    newAttendance.setSession(rs.getInt("session"));
+                    newAttendance.setDate(rs.getDate("date").toLocalDate());
+                    newAttendance.setStatus(rs.getString("status"));
+
+                    attendances.add(newAttendance);
+                }
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+
+        return attendances;
     }
 
     // Cập nhật điểm danh vào database
@@ -91,5 +119,4 @@ public class AttendanceRepository {
 
         return false;
     }
-
 }
