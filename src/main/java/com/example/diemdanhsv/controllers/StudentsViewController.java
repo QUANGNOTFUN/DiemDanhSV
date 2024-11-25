@@ -47,7 +47,7 @@ public class StudentsViewController {
     @FXML
     public void initialize() {
         try {
-            int userId = 2;
+            int userId = 1;
             // Load dữ liệu ban đầu
             loadStudentView(userId, 1);
 
