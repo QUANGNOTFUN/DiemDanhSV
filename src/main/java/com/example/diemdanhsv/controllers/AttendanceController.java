@@ -68,6 +68,9 @@ public class AttendanceController implements Initializable {
 
     private int currentCourseId;
 
+    @FXML
+    private ComboBox<String> courseComboBox;
+
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         attendanceRepository = new AttendanceRepository();
@@ -106,23 +109,16 @@ public class AttendanceController implements Initializable {
         attendanceTable.setItems(studentList); // Gắn danh sách rỗng vào bảng
 
         loadCourses(); // Chỉ tải các nút khóa học
+
+        loadCoursesIntoComboBox();
     }
 
-
-    private void loadAttendanceData() {
-        ObservableList<Attendance> attendanceList = attendanceRepository.getAttendanceList();
-        for (Attendance attendance : attendanceList) {
-            Student student = new Student(
-                    attendance.getStudentId(),
-                    attendance.getStudentName(),
-                    attendance.getStudentId(), // Giá trị userId
-                    attendance.getGender(),
-                    attendance.getStatus(),
-                    attendance.getDate().atStartOfDay()
-            );
-            studentList.add(student);
-        }
+    private void loadCoursesIntoComboBox() {
+        CourseRepository courseRepository = new CourseRepository();
+        ObservableList<String> courses = courseRepository.getCourses();
+        courseComboBox.setItems(courses);
     }
+
 
     public void add(ActionEvent e) {
         try {
@@ -251,18 +247,18 @@ public class AttendanceController implements Initializable {
     private void enableAllControls() {
         addButton.setDisable(false);
         removeButton.setDisable(false);
-        courseComboBox.setDisable(false);
+        courseButtonContainer.setDisable(false);
     }
 
     private void enableTeacherControls() {
         addButton.setDisable(false);
         removeButton.setDisable(false);
-        courseComboBox.setDisable(false);
+        courseButtonContainer.setDisable(false);
     }
 
     private void enableStudentControls() {
         addButton.setDisable(true);
         removeButton.setDisable(true);
-        courseComboBox.setDisable(true);
+        courseButtonContainer.setDisable(true);
     }
 }
