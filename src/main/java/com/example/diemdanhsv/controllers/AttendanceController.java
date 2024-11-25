@@ -99,14 +99,14 @@ public class AttendanceController implements Initializable {
 
         loadCourses(); // Chỉ tải các nút khóa học
 
-        loadCoursesIntoComboBox();
+//        loadCoursesIntoComboBox();
     }
 
-    private void loadCoursesIntoComboBox() {
-        CourseRepository courseRepository = new CourseRepository();
-        ObservableList<String> courses = courseRepository.getCourses();
-        courseComboBox.setItems(courses);
-    }
+//    private void loadCoursesIntoComboBox() {
+//        CourseRepository courseRepository = new CourseRepository();
+//        ObservableList<String> courses = courseRepository.getCourses();
+//        courseComboBox.setItems(courses);
+//    }
 
 
     public void add(ActionEvent e) {
@@ -246,8 +246,8 @@ public class AttendanceController implements Initializable {
     }
 
     private void enableStudentControls() {
-        addButton.setDisable(true);
-        removeButton.setDisable(true);
-        courseButtonContainer.setDisable(true);
+        addButton.setDisable(false);
+        removeButton.setDisable(false);
+        courseButtonContainer.setDisable(false);
     }
 }

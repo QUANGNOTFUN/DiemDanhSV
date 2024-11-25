@@ -20,8 +20,8 @@
         <TextField fx:id="idField" promptText="Mã số sinh viên" />
 
         <HBox alignment="CENTER" spacing="10">
-            <Button onAction="#add" style="-fx-font-size: 14px;" text="Thêm" />
-            <Button onAction="#remove" style="-fx-font-size: 14px;" text="Xóa" />
+            <Button fx:id="addButton" onAction="#add" style="-fx-font-size: 14px;" text="Thêm" />
+            <Button fx:id="removeButton" onAction="#remove" style="-fx-font-size: 14px;" text="Xóa" />
         </HBox>
     </VBox>
 
