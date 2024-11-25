@@ -13,7 +13,6 @@ import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 
 public class LoginController {
-
     @FXML
     private TextField usernameField;
     @FXML
@@ -55,8 +54,6 @@ public class LoginController {
                         openStudentView(user);
                     }
                 }
-
-                
                 // Đóng form login
                 closeLoginForm();
             } else {
@@ -104,8 +101,15 @@ public class LoginController {
 
     private void openStudentView(User user) {
         try {
+            // Tải FXML
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/example/diemdanhsv/StudentsView.fxml"));
             Parent root = loader.load();
+
+            // Lấy controller từ loader
+            StudentsViewController controller = loader.getController();
+            controller.setUserId(user.getId());
+
+            // Tạo và hiển thị Stage
             Stage stage = new Stage();
             stage.setScene(new Scene(root));
             stage.setMaximized(true);
@@ -113,8 +117,10 @@ public class LoginController {
             stage.show();
         } catch (Exception e) {
             showError("Lỗi", "Không thể mở form học sinh: " + e.getMessage());
+            e.printStackTrace();
         }
     }
+
 
     private void closeLoginForm() {
         ((Stage) usernameField.getScene().getWindow()).close();

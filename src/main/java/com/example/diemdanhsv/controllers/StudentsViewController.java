@@ -10,11 +10,14 @@ import javafx.scene.control.*;
 import java.sql.SQLException;
 import java.time.LocalDate;
 import java.util.List;
-import java.util.Objects;
 
 public class StudentsViewController {
     private static final StudentsViewModel studentsVM = new StudentsViewModel();
     private static final AttendanceRecordViewModel attendanceVM = new AttendanceRecordViewModel();
+
+    private int userId;
+
+    public StudentsViewController() {}
 
     // Khung bên trái
     @FXML
@@ -47,9 +50,14 @@ public class StudentsViewController {
     @FXML
     public void initialize() {
         try {
-            int userId = 1;
+            int userId = getUserId();
+            System.out.println(userId);
+
             // Load dữ liệu ban đầu
             loadStudentView(userId, 1);
+
+            // Cấu hình bảng (chỉ cần làm một lần)
+            configureTableColumns();
 
             // Đăng ký sự kiện thay đổi học kỳ
             hk1ToggleButton.setOnAction(event -> handleSemesterChange(userId));
@@ -58,6 +66,14 @@ public class StudentsViewController {
         } catch (Exception e) {
             System.err.println("Lỗi khi khởi tạo: " + e.getMessage());
         }
+    }
+
+    public int getUserId() {
+        return userId;
+    }
+
+    public void setUserId(int id) {
+        userId = id;
     }
 
     // Phương thức tải dữ liệu sinh viên từ ViewModel
@@ -81,6 +97,13 @@ public class StudentsViewController {
     private void loadCourseList() {
         List<Course> courses = studentsVM.getCourses();
 
+        if (courses == null || courses.isEmpty()) {
+            listCourse.getItems().clear();
+            titleSubject.setText("Không có môn học nào");
+            attendanceTable.getItems().clear();
+            return;
+        }
+
         // Xóa các mục cũ và thêm các mục mới
         listCourse.getItems().clear();
         for (Course course : courses) {
@@ -91,7 +114,7 @@ public class StudentsViewController {
         listCourse.setOnAction(event -> {
             // Lấy môn học được chọn
             String selectedCourseName = listCourse.getSelectionModel().getSelectedItem();
-
+            titleSubject.setText("Môn học: " + selectedCourseName);
             // Tìm đối tượng Course tương ứng
             Course selectedCourse = courses.stream()
                     .filter(course -> course.getName().equals(selectedCourseName))
@@ -104,7 +127,6 @@ public class StudentsViewController {
             }
         });
     }
-
 
     // Phương thức thêm data vào table view
     private void configureTableColumns() {
@@ -120,8 +142,9 @@ public class StudentsViewController {
 
     // Phương thức xử lý khi bấm nút
     private void handleButtonClick(AttendanceRecordViewModel record, int studentId) {
-        attendanceVM.updateStatusCourseVN(record, studentId); // Cật nhật trạng thái
+        attendanceVM.updateStatusCourseVN(record, studentId);
         record.setStatus("Present");
+        attendanceTable.refresh();
     }
 
     // Xử lý sự kiện thay đổi học kỳ
@@ -130,8 +153,8 @@ public class StudentsViewController {
 
         try {
             loadStudentView(userId, semester);
-            hk1ToggleButton.setSelected(false);
-            hk2ToggleButton.setSelected(false);
+            hk1ToggleButton.setSelected(semester == 1);
+            hk2ToggleButton.setSelected(semester == 2);
         } catch (SQLException e) {
             showAlert("Lỗi", "Không thể tải dữ liệu: " + e.getMessage());
         }
