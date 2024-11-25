@@ -24,7 +24,7 @@ import java.util.ResourceBundle;
 
 public class AttendanceController implements Initializable {
     @FXML
-    public ComboBox sessionComboBox;
+    public ComboBox<String> sessionComboBox;
     @FXML
     private Button addButton;
     @FXML
@@ -85,7 +85,7 @@ public class AttendanceController implements Initializable {
                 comboBox.setOnAction(event -> {
                     Student data = getTableView().getItems().get(getIndex());
                     String newStatus = comboBox.getValue();
-                    data.setStatus(newStatus); // Cập nhật status trong đối tượng `Student`
+                    data.setStatus(newStatus); // Cập nhật status trong đối tượng Student
                     // Lưu cập nhật vào cơ sở dữ liệu
                     boolean isUpdated = attendanceRepository.updateStatus(data.getId(), newStatus, currentCourseId, getSessionNumber((String) sessionComboBox.getSelectionModel().getSelectedItem()));
                 });
@@ -98,7 +98,7 @@ public class AttendanceController implements Initializable {
                     setGraphic(null);
                 } else {
                     Student data = getTableView().getItems().get(getIndex());
-                    comboBox.setValue(data.getStatus()); // Lấy giá trị status từ đối tượng `Student`
+                    comboBox.setValue(data.getStatus()); // Lấy giá trị status từ đối tượng Student
                     setGraphic(comboBox);
                 }
             }
@@ -112,28 +112,27 @@ public class AttendanceController implements Initializable {
 
     public void add(ActionEvent e) {
         try {
-            // Lấy ID sinh viên từ trường nhập liệu
+            // Get student ID from input field
             int studentId = Integer.parseInt(idField.getText());
 
-            int courseId = currentCourseId; // Lấy courseId hiện tại
-            LocalDate date = LocalDate.now(); // Ngày hiện tại
-            String status = "absent"; // Trạng thái mặc định
+            int courseId = currentCourseId; // Get current course ID
+            LocalDate date = LocalDate.now(); // Current date
+            String status = "absent"; // Default status
 
             // Get the selected session from the ComboBox
             String selectedSession = (String) sessionComboBox.getSelectionModel().getSelectedItem();
             int sessionNumber = getSessionNumber(selectedSession); // Convert session string to number
 
-            // Thêm đối tượng Attendance vào cơ sở dữ liệu
-            boolean isAdded = attendanceRepository.addAttendance(studentId, currentCourseId, date, status);
+            // Add attendance to the database
+            boolean isAdded = attendanceRepository.addAttendance(studentId, courseId, date, status);
 
             if (isAdded) {
-                // Nếu thêm thành công, cập nhật danh sách sinh viên
                 showAlert("Success", "Student added to attendance successfully.");
             } else {
                 showAlert("Error", "Failed to add student to attendance.");
             }
 
-            // Xóa trường nhập liệu
+            // Clear input field
             idField.clear();
         } catch (NumberFormatException ex) {
             showAlert("Input Error", "Please enter a valid student ID!");
@@ -197,8 +196,10 @@ public class AttendanceController implements Initializable {
         // Load available sessions from the database based on the current course
         ObservableList<String> availableSessions = attendanceRepository.getAvailableSessions();
         sessionComboBox.getItems().clear(); // Clear existing sessions
-        sessionComboBox.getItems().addAll(availableSessions);
-        
+
+        // Add all available sessions to the ComboBox
+        sessionComboBox.getItems().addAll(availableSessions); // Ensure all sessions are added
+
         if (!availableSessions.isEmpty()) {
             sessionComboBox.getSelectionModel().selectFirst(); // Select the first session by default
         } else {
@@ -216,7 +217,7 @@ public class AttendanceController implements Initializable {
     private void loadAttendanceTable() {
         // Get the selected session from the ComboBox
         String selectedSession = (String) sessionComboBox.getSelectionModel().getSelectedItem();
-        
+
         if (selectedSession != null) { // Check if selectedSession is not null
             int sessionNumber = getSessionNumber(selectedSession); // Convert session string to number
 
@@ -242,7 +243,7 @@ public class AttendanceController implements Initializable {
     private void handleCourseSelection(String course) {
         CourseRepository courseRepository = new CourseRepository();
         currentCourseId = courseRepository.getCourseIdByName(course);
-        
+
         // Update the selected course label
         selectedCourseLabel.setText(course); // Set the selected course name
 
@@ -250,17 +251,17 @@ public class AttendanceController implements Initializable {
         loadSessions();
     }
 
-    private int getSessionNumber(String session) {
-        switch (session) {
-            case "Buổi 1":
-                return 1;
-            case "Buổi 2":
-                return 2;
-            case "Buổi 3":
-                return 3;
-            default:
-                return 0; // Default case if needed
+    private int getSessionNumber(String sessionString) {
+        // Get all session numbers from the database
+        ObservableList<Integer> sessionNumbers = attendanceRepository.getSessionNumbers();
+
+        // Check if the sessionString is valid and matches any session number
+        for (Integer sessionNumber : sessionNumbers) {
+            if (sessionString.equals("Buổi " + sessionNumber)) {
+                return sessionNumber; // Return the matching session number
+            }
         }
+        return -1; // Return -1 if no match is found
     }
 
     private void showAlert(String title, String message) {
