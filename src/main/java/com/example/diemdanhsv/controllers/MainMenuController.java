@@ -26,11 +26,11 @@ public class MainMenuController {
     @FXML
     private void openAttendance(ActionEvent event) {
         try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/example/diemdanhsv/Attendance.fxml"));
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/example/diemdanhsv/TeacherView.fxml"));
             Parent root = loader.load();
             
             // Truyền currentUser cho AttendanceController
-            AttendanceController controller = loader.getController();
+            TeachersController controller = loader.getController();
             controller.setCurrentUser(currentUser);
             
             Stage stage = new Stage();

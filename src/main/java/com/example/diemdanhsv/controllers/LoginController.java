@@ -42,13 +42,20 @@ public class LoginController {
             User user = userRepository.login(username, password);
             
             if (user != null) {
-                if (user.isFirstLogin()) {
-                    // Nếu là lần đăng nhập đầu tiên, mở form đổi mật khẩu
-                    openChangePasswordForm(user);
+                if (user.getRole().equals("admin")) {
+                    if (!user.isFirstLogin()) {
+                        openChangePasswordForm(user);
+                    } else {
+                        openMainMenuForm(user);
+                    }
                 } else {
-                    // Mở form chính tương ứng với role của user
-                    openMainMenuForm(user);
+                    if (!user.isFirstLogin()) {
+                        openChangePasswordForm(user);
+                    } else {
+                        openStudentView(user);
+                    }
                 }
+
                 
                 // Đóng form login
                 closeLoginForm();
@@ -92,6 +99,20 @@ public class LoginController {
             stage.show();
         } catch (Exception e) {
             showError("Lỗi", "Không thể mở form menu chính: " + e.getMessage());
+        }
+    }
+
+    private void openStudentView(User user) {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/example/diemdanhsv/StudentsView.fxml"));
+            Parent root = loader.load();
+            Stage stage = new Stage();
+            stage.setScene(new Scene(root));
+            stage.setMaximized(true);
+            stage.setTitle("Trang học sinh");
+            stage.show();
+        } catch (Exception e) {
+            showError("Lỗi", "Không thể mở form học sinh: " + e.getMessage());
         }
     }
 

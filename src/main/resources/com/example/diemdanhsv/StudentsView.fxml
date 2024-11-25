@@ -12,7 +12,7 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 
-<BorderPane prefHeight="856.0" prefWidth="959.0" stylesheets="@studentsView.css" xmlns="http://javafx.com/javafx/23" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.diemdanhsv.controllers.StudentsViewController">
+<BorderPane prefHeight="856.0" prefWidth="959.0" stylesheets="@StudentsView.css" xmlns="http://javafx.com/javafx/23" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.diemdanhsv.controllers.StudentsViewController">
    <left>
       <VBox prefHeight="600.0" prefWidth="300.0" styleClass="left-pane" BorderPane.alignment="CENTER">
          <children>
