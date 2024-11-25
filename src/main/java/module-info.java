@@ -3,6 +3,7 @@ module com.example.diemdanhsv {
     requires javafx.fxml;
     requires java.sql;
     requires java.desktop;
+    requires mysql.connector.j;
 
 
     opens com.example.diemdanhsv to javafx.fxml;
