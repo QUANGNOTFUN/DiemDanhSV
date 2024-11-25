@@ -44,7 +44,7 @@ public class CourseRepository
 
             // Lấy couresName từ course
             try(ResultSet coursesIdRs = coursesIdStmt.executeQuery()) {
-                if (coursesIdRs.next()) {
+                while (coursesIdRs.next()) {
                     int courseId = coursesIdRs.getInt("course_id");
                     String coursesQurey = "Select name, start_date, end_date, day, academic_year From course Where id = ? And semester = ?";
 
@@ -67,7 +67,6 @@ public class CourseRepository
                     }
                 }
             }
-
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }

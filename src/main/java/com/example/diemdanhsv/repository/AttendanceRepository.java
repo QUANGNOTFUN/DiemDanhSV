@@ -2,13 +2,12 @@ package com.example.diemdanhsv.repository;
 
 import com.example.diemdanhsv.databaseConnect.DatabaseConnection;
 import com.example.diemdanhsv.models.Attendance;
+import com.example.diemdanhsv.viewModels.AttendanceRecordViewModel;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
+import java.util.Objects;
 
 public class AttendanceRepository {
 
@@ -42,6 +41,55 @@ public class AttendanceRepository {
         }
 
         return attendanceList;
+    }
+
+    // Cập nhật điểm danh vào database
+    public void updateStatusCourse(AttendanceRecordViewModel record, int studentId) {
+        String query = "INSERT INTO attendance (student_id, course_id, session, date, status)" + "VALUES (?, ?, ?, ?, ?)";
+
+        try (Connection conn = DatabaseConnection.getConnection();
+            PreparedStatement stmt = conn.prepareStatement(query)) {
+
+            if (record != null) {
+                stmt.setInt(1, studentId);
+                stmt.setInt(2, record.getCourseId());
+                stmt.setInt(3, record.getSession());
+                stmt.setDate(4, Date.valueOf(record.getDate()));
+                if ("Pending".equals( record.getStatus())) {
+                    stmt.setString(5, "present");
+                }
+
+                stmt.executeUpdate();
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    // Kiểm tra đã điểm danh ngày đó chưa
+    public boolean checkAttandance(AttendanceRecordViewModel record, int studentId) {
+        String query = "SELECT session, date, status FROM attendance WHERE student_id = ? AND course_id = ?";
+
+        try (Connection conn = DatabaseConnection.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(query)) {
+
+            // Gán tham số đúng thứ tự cho câu lệnh SQL
+            stmt.setInt(1, studentId);  // student_id
+            stmt.setInt(2, record.getCourseId());  // course_id
+
+            try (ResultSet rs = stmt.executeQuery()) {
+                while (rs.next()) {
+                    if (record.getSession() == rs.getInt("session")) {
+                        // Sử dụng .equals() để so sánh giá trị của chuỗi
+                        return "present".equals(rs.getString("status"));
+                    }
+                }
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+
+        return false;
     }
 
 }

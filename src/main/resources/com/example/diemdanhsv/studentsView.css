@@ -88,7 +88,6 @@
     -fx-background-color: #ffffff; /* Màu nền trắng */
     -fx-border-color: #c5cae9; /* Đường viền xám */
     -fx-font-size: 14px; /* Kích thước chữ */
-    -fx-spacing: 10px;
 }
 
 /* Đặt kiểu cho các TableColumn */
@@ -107,4 +106,9 @@
 /* Table row hover effect */
 .data-table .table-row-cell:hover {
     -fx-background-color: #f1f1f1; /* Màu nền nhẹ khi hover */
+}
+
+/* Căn giữa nội dung trong các cột TableView */
+.data-table .table-cell {
+    -fx-alignment: CENTER; /* Căn giữa cả chiều ngang và dọc */
 }

@@ -7,10 +7,10 @@ public class Attendance {
     private int studentId;
     private int courseId;
     private LocalDate date;
+    private int session;
     private String status;
     private String studentName;
     private String gender;
-
 
     // Constructor with all fields
     public Attendance(int id, int studentId, int courseId, LocalDate date, String status, String studentName, String gender) {
@@ -81,5 +81,13 @@ public class Attendance {
 
     public void setGender(String gender) {
         this.gender = gender;
+    }
+
+    public int getSession() {
+        return session;
+    }
+
+    public void setSession(int session) {
+        this.session = session;
     }
 }

@@ -27,6 +27,33 @@ public class StudentsViewModel {
 
     public StudentsViewModel() {}
 
+    // hàm gọi repos
+    public void setInfoLogin(Student student) {
+        this.id.set("MSSV: " + student.getId());
+        this.name.set("Tên: " + student.getName());
+    }
+    public void setCoursesLogin(List<Course> coursesList) {
+        courses.clear();
+        courses.addAll(coursesList);
+//        System.out.println(courses);
+    }
+
+    // Lấy thông tin sinh viên và các môn học
+    public void getInfoLoginVM(int userId, int semester, Connection conn) throws SQLException {
+        // Lấy thông tin sinh viên từ repository
+        Student student = _studentRepo.getInfoLogin(userId, conn);
+        List<Course> coursesList = _courseRepo.getCourseLogin(student.getId(), semester, conn);
+
+        // Kiểm tra nếu thông tin sinh viên có tồn tại
+        if (student != null) {
+            setInfoLogin(student);
+            setCoursesLogin(coursesList);
+        } else {
+            throw new RuntimeException("Không tìm thấy sinh viên với ID: " + userId);
+        }
+    }
+
+    // get set
     public String getId() {
         return id.get();
     }
@@ -49,30 +76,6 @@ public class StudentsViewModel {
 
     public StringProperty nameProperty() {
         return name;
-    }
-
-    public void setInfoLogin(Student student) {
-        this.id.set("MSSV: " + student.getId());
-        this.name.set("Tên: " + student.getName());
-    }
-    public void setCoursesLogin(List<Course> coursesList) {
-        courses.clear();
-        courses.addAll(coursesList);
-    }
-
-    // Lấy thông tin sinh viên và các môn học
-    public void getInfoLoginVM(int userId, int semester, Connection conn) throws SQLException {
-        // Lấy thông tin sinh viên từ repository
-        Student student = _studentRepo.getInfoLogin(userId, conn);
-        List<Course> coursesList = _courseRepo.getCourseLogin(student.getId(), semester, conn);
-
-        // Kiểm tra nếu thông tin sinh viên có tồn tại
-        if (student != null) {
-            setInfoLogin(student);
-            setCoursesLogin(coursesList);
-        } else {
-            throw new RuntimeException("Không tìm thấy sinh viên với ID: " + userId);
-        }
     }
 
     public int getSemester() {
