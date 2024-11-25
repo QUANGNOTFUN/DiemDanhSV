@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
@@ -10,6 +11,7 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
+<?import javafx.scene.paint.Color?>
 
 <AnchorPane xmlns="http://javafx.com/javafx/23" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.diemdanhsv.controllers.AttendanceController">
     <!-- Form Inputs -->
@@ -47,4 +49,9 @@
         </Label>
         <FlowPane fx:id="courseButtonContainer" hgap="10" layoutX="210.0" layoutY="14.0" prefHeight="82.0" prefWidth="785.0" vgap="10" />
     </HBox>
+
+    <!-- New Label for Selected Course -->
+    <Label fx:id="selectedCourseLabel" layoutX="37.0" layoutY="70.0" text="Môn học hiện tại: " style="-fx-font-size: 16px; -fx-text-fill: blue;" />
+
+    <ComboBox fx:id="sessionComboBox" layoutX="37.0" layoutY="37.0" prefWidth="150" />
 </AnchorPane>

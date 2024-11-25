@@ -11,9 +11,37 @@ public class Attendance {
     private String studentName;
     private String courseName;
     private String gender;
+    private String session;  // Thêm trường session
 
+    // Constructor với tất cả các trường
+    public Attendance(int id, int studentId, int courseId, LocalDate date, String status, String studentName, String gender, String session) {
+        this.id = id;
+        this.studentId = studentId;
+        this.courseId = courseId;
+        this.date = date;
+        this.status = status;
+        this.studentName = studentName;
+        this.gender = gender;
+        this.session = session;  // Khởi tạo session
+    }
 
-    // Constructor with all fields
+    // Constructor khác với tất cả các trường, bao gồm session
+    public Attendance(int id, int studentId, LocalDate date, String status, String studentName, String gender, String courseName, int courseId, String session) {
+        this.id = id;
+        this.studentId = studentId;
+        this.date = date;
+        this.status = status;
+        this.studentName = studentName;
+        this.gender = gender;
+        this.courseName = courseName;
+        this.courseId = courseId; // Khởi tạo courseId
+        this.session = session;  // Khởi tạo session
+    }
+
+    // Constructor mặc định
+    public Attendance() {
+    }
+
     public Attendance(int id, int studentId, int courseId, LocalDate date, String status, String studentName, String gender) {
         this.id = id;
         this.studentId = studentId;
@@ -22,22 +50,10 @@ public class Attendance {
         this.status = status;
         this.studentName = studentName;
         this.gender = gender;
-    }
-    public Attendance(int id, int studentId, LocalDate date, String status, String studentName, String gender, String courseName, int courseId) {
-        this.id = id;
-        this.studentId = studentId;
-        this.date = date;
-        this.status = status;
-        this.studentName = studentName;
-        this.gender = gender;
-        this.courseName = courseName;
-        this.courseId = courseId; // Initialize courseId
-    }
-    // Default constructor
-    public Attendance() {
+        // Không cần khởi tạo session vì không có tham số session
     }
 
-    // Getters and Setters
+    // Getters và Setters
     public int getId() {
         return id;
     }
@@ -85,6 +101,7 @@ public class Attendance {
     public void setStudentName(String studentName) {
         this.studentName = studentName;
     }
+
     public String getCourseName() {
         return courseName;
     }
@@ -92,11 +109,21 @@ public class Attendance {
     public void setCourseName(String courseName) {
         this.courseName = courseName;
     }
+
     public String getGender() {
         return gender;
     }
 
     public void setGender(String gender) {
         this.gender = gender;
+    }
+
+    // Getter và Setter cho session
+    public String getSession() {
+        return session;
+    }
+
+    public void setSession(String session) {
+        this.session = session;
     }
 }
