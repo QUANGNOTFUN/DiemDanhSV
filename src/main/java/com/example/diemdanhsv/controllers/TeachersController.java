@@ -10,10 +10,18 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.Initializable;
+import javafx.scene.Node;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.FlowPane;
+import javafx.stage.FileChooser;
 
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.net.URL;
 import javafx.scene.control.ToggleGroup;
 import javafx.scene.layout.VBox;
 
@@ -387,4 +395,37 @@ public class TeachersController {
         });
 
     }
+    @FXML
+private void exportAttendance(ActionEvent event) {
+    // Logic to export the attendance list
+    try {
+        // Create a file chooser to select the export location
+        FileChooser fileChooser = new FileChooser();
+        fileChooser.setTitle("Save Attendance List");
+        fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("CSV Files", "*.csv"));
+        File file = fileChooser.showSaveDialog(((Node) event.getSource()).getScene().getWindow());
+
+        if (file != null) {
+            // Retrieve the attendance data
+            ObservableList<Attendance> attendanceList = attendanceRepository.getAttendanceByCourseId(currentCourseId, getSessionNumber((String) sessionComboBox.getSelectionModel().getSelectedItem()));
+
+            // Write the data to the selected file
+            try (BufferedWriter writer = new BufferedWriter(new FileWriter(file))) {
+                writer.write("Student ID,Student Name,Gender,Status,Date\n");
+                for (Attendance attendance : attendanceList) {
+                    writer.write(attendance.getStudentId() + "," +
+                                 attendance.getStudentName() + "," +
+                                 attendance.getGender() + "," +
+                                 attendance.getStatus() + "," +
+                                 attendance.getDate() + "\n");
+                }
+                showAlert("Success", "Attendance list exported successfully.");
+            } catch (IOException e) {
+                showAlert("Error", "An error occurred while exporting the attendance list: " + e.getMessage());
+            }
+        }
+    } catch (Exception e) {
+        showAlert("Error", "An error occurred: " + e.getMessage());
+    }
+}
 }
