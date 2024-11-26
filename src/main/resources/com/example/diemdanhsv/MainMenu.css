@@ -1,0 +1,33 @@
+/* MainMenu.css */
+
+.anchor-pane {
+    -fx-background-color: linear-gradient(to bottom, #283c86, #45a247);
+    -fx-padding: 20px;
+}
+
+.label {
+    -fx-font-size: 32px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #ffffff;
+    -fx-alignment: center;
+}
+
+#welcomeLabel {
+    -fx-font-size: 20px;
+    -fx-text-fill: #ffffff;
+}
+
+.menu-button {
+    -fx-background-color: #45a247;
+    -fx-text-fill: #ffffff;
+    -fx-font-weight: bold;
+    -fx-font-size: 16px;
+    -fx-border-radius: 15px;
+    -fx-background-radius: 15px;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.3), 7, 0.5, 0, 0);
+    -fx-cursor: hand;
+}
+
+.menu-button:hover {
+    -fx-background-color: #3e8b3a;
+}

@@ -1,53 +1,57 @@
+/* StudentsView.css */
+
 /* Đặt màu nền cho toàn bộ BorderPane */
 .border-pane {
-    -fx-background-color: #f0f4f8; /* Màu nền sáng nhẹ */
+    -fx-background-color: linear-gradient(to bottom, #ff7e5f, #feb47b); /* Gradient màu nền nổi bật */
 }
 
 /* Đặt kiểu cho VBox bên trái */
 .left-pane {
     -fx-background-color: #ffffff; /* Màu nền trắng cho sidebar */
-    -fx-padding: 15; /* Khoảng cách bên trong */
-    -fx-spacing: 10; /* Khoảng cách giữa các thành phần */
-    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.1), 5, 0.0, 0, 0); /* Hiệu ứng bóng */
+    -fx-padding: 20px; /* Khoảng cách bên trong */
+    -fx-spacing: 20px; /* Khoảng cách giữa các thành phần */
+    -fx-border-radius: 10px; /* Bo góc cho viền */
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.1), 15, 0, 0, 0); /* Hiệu ứng bóng */
 }
 
 /* Đặt kiểu cho tiêu đề */
 .title-label {
-    -fx-font-size: 20px; /* Kích thước chữ */
+    -fx-font-size: 26px; /* Kích thước chữ */
     -fx-font-weight: bold; /* Đậm chữ */
-    -fx-text-fill: #2c3e50; /* Màu xám đậm dễ đọc */
+    -fx-text-fill: #ffffff; /* Màu trắng cho chữ */
     -fx-background-color: transparent; /* Loại bỏ nền */
-    -fx-padding: 10; /* Khoảng cách bên trong */
+    -fx-padding: 10px; /* Khoảng cách bên trong */
+    -fx-alignment: center; /* Căn giữa */
 }
 
 /* Các label thông tin sinh viên */
 .info-label {
-    -fx-font-size: 18;
-    -fx-text-fill: #34495e; /* Màu xám đậm hơn */
+    -fx-font-size: 20px;
+    -fx-text-fill: #4a4a4a; /* Màu xám đậm */
     -fx-background-color: transparent; /* Loại bỏ nền */
-    -fx-padding: 5px 10px;
+    -fx-padding: 8px 15px;
 }
 
 /* Phần chọn học kỳ với ToggleButton */
 .toggle-button {
-    -fx-background-color: #007BFF; /* Màu nền xanh dương */
+    -fx-background-color: #ff6f61; /* Màu nền đỏ cam */
     -fx-text-fill: white; /* Màu chữ trắng */
-    -fx-font-size: 14px; /* Kích thước chữ */
-    -fx-padding: 8px 8px; /* Khoảng cách bên trong */
-    -fx-border-radius: 5px; /* Bo góc */
-    -fx-background-radius: 5px; /* Bo góc */
+    -fx-font-size: 15px; /* Kích thước chữ */
+    -fx-padding: 10px 15px; /* Khoảng cách bên trong */
+    -fx-border-radius: 10px; /* Bo góc */
+    -fx-background-radius: 10px; /* Bo góc */
     -fx-cursor: hand; /* Con trỏ chuột chuyển thành tay khi hover */
     -fx-transition: background-color 0.3s ease, -fx-transform 0.3s ease; /* Hiệu ứng chuyển màu và chuyển động */
 }
 
 .toggle-button:hover {
-    -fx-background-color: #0056b3; /* Màu nền khi hover (xanh dương đậm) */
-    -fx-scale-x: 1.05; /* Tăng kích thước khi hover */
-    -fx-scale-y: 1.05; /* Tăng kích thước khi hover */
+    -fx-background-color: #e14e4e; /* Màu nền khi hover (đỏ đậm) */
+    -fx-scale-x: 1.08; /* Tăng kích thước khi hover */
+    -fx-scale-y: 1.08; /* Tăng kích thước khi hover */
 }
 
-.toggle-button:selected  {
-    -fx-background-color: #0056b3; /* Màu nền khi hover (xanh dương đậm) */
+.toggle-button:selected {
+    -fx-background-color: #d63333; /* Màu nền khi được chọn (đỏ đậm hơn) */
 }
 
 .toggle-button:focus {
@@ -57,45 +61,45 @@
 /* ComboBox */
 .subject-combo {
     -fx-background-color: #ffffff; /* Màu nền trắng */
-    -fx-border-color: #007BFF; /* Đường viền xanh dương */
-    -fx-border-radius: 5px; /* Bo góc */
-    -fx-padding: 5px; /* Khoảng cách bên trong */
-    -fx-font-size: 14px; /* Kích thước chữ */
-    -fx-pref-height: 40px; /* Chiều cao mặc định */
-    -fx-pref-width: 280px; /* Chiều rộng mặc định */
+    -fx-border-color: #ff6f61; /* Đường viền đỏ cam */
+    -fx-border-radius: 10px; /* Bo góc */
+    -fx-padding: 10px; /* Khoảng cách bên trong */
+    -fx-font-size: 15px; /* Kích thước chữ */
+    -fx-pref-height: 45px; /* Chiều cao mặc định */
+    -fx-pref-width: 300px; /* Chiều rộng mặc định */
     -fx-cursor: hand; /* Con trỏ chuột chuyển thành tay khi hover */
     -fx-transition: border-color 0.3s ease; /* Hiệu ứng chuyển màu đường viền */
 }
 
 /* Hiệu ứng khi hover cho ComboBox */
 .subject-combo:hover {
-    -fx-border-color: #0056b3; /* Đường viền khi hover (xanh dương đậm) */
+    -fx-border-color: #e14e4e; /* Đường viền khi hover (đỏ đậm) */
 }
 
 /* Đặt kiểu cho Button */
 .logout-button {
-    -fx-background-color: #28a745; /* Màu xanh lá */
+    -fx-background-color: #2ECC71; /* Màu xanh lá sáng */
     -fx-text-fill: white; /* Màu chữ trắng */
-    -fx-padding: 10px 20px; /* Khoảng cách bên trong */
-    -fx-font-size: 16px; /* Kích thước chữ */
-    -fx-border-radius: 5px; /* Bo góc */
-    -fx-background-radius: 5px; /* Bo góc */
-    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.2), 5, 0.0, 0, 0); /* Hiệu ứng bóng */
+    -fx-padding: 12px 25px; /* Khoảng cách bên trong */
+    -fx-font-size: 17px; /* Kích thước chữ */
+    -fx-border-radius: 10px; /* Bo góc */
+    -fx-background-radius: 10px; /* Bo góc */
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.2), 7, 0, 0, 0); /* Hiệu ứng bóng */
     -fx-cursor: hand; /* Con trỏ chuột chuyển thành tay khi hover */
     -fx-transition: background-color 0.3s ease, -fx-transform 0.3s ease; /* Hiệu ứng chuyển màu và chuyển động */
 }
 
 .logout-button:hover {
-    -fx-background-color: #218838; /* Màu nền khi hover (xanh lá đậm) */
-    -fx-scale-x: 1.05; /* Tăng kích thước khi hover */
-    -fx-scale-y: 1.05; /* Tăng kích thước khi hover */
+    -fx-background-color: #27AE60; /* Màu nền khi hover (xanh lá đậm) */
+    -fx-scale-x: 1.08; /* Tăng kích thước khi hover */
+    -fx-scale-y: 1.08; /* Tăng kích thước khi hover */
 }
 
 /* Điều chỉnh giao diện bảng TableView */
 .data-table {
     -fx-background-color: #ffffff; /* Màu nền trắng */
     -fx-border-color: #c5cae9; /* Đường viền xám */
-    -fx-font-size: 14px; /* Kích thước chữ */
+    -fx-font-size: 15px; /* Kích thước chữ */
 }
 
 /* Đặt kiểu cho các TableColumn */
@@ -106,9 +110,9 @@
 
 /* Chỉnh sửa phần tiêu đề bảng */
 .title-table {
-    -fx-font-size: 40; /* Kích thước chữ */
+    -fx-font-size: 40px; /* Kích thước chữ */
     -fx-font-weight: bold; /* Đậm chữ */
-    -fx-text-fill: #333333; /* Màu chữ trắng */
+    -fx-text-fill: #333333; /* Màu chữ đậm */
 }
 
 /* Table row hover effect */

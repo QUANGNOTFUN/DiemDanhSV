@@ -6,16 +6,15 @@
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.VBox?>
 
-<VBox alignment="CENTER" prefHeight="200.0" prefWidth="250.0" spacing="15" style="-fx-background-color: #f0f4f8; -fx-padding: 20;" xmlns="http://javafx.com/javafx/23" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.diemdanhsv.controllers.LoginController">
+<VBox alignment="CENTER" prefHeight="268.0" prefWidth="468.0" spacing="15" styleClass="login-container" stylesheets="@LoginView.css" xmlns="http://javafx.com/javafx/23" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.diemdanhsv.controllers.LoginController">
 
-    <Label style="-fx-font-size: 20px; -fx-font-weight: bold;" text="Đăng nhập" />
-    
-    <TextField fx:id="usernameField" prefWidth="200.0" promptText="Tên đăng nhập" />
-    
-    <PasswordField fx:id="passwordField" prefWidth="200.0" promptText="Mật khẩu" />
-    
-    <Button onAction="#handleLogin" style="-fx-background-color: #4CAF50; -fx-text-fill: white; -fx-font-weight: bold; -fx-font-size: 14px;" text="Đăng nhập" />
-    
-    <Label fx:id="messageLabel" style="-fx-text-fill: red;" />
+    <Label styleClass="login-title" text="Đăng nhập" />
 
+    <TextField fx:id="usernameField" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="40.0" prefWidth="300.0" promptText="Tên đăng nhập" styleClass="login-input" />
+
+    <PasswordField fx:id="passwordField" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="40.0" prefWidth="300.0" promptText="Mật khẩu" styleClass="login-input" />
+
+    <Button alignment="CENTER" onAction="#handleLogin" prefHeight="35.0" prefWidth="110.0" styleClass="login-button" text="Đăng nhập" />
+
+    <Label fx:id="messageLabel" styleClass="login-message" />
 </VBox>

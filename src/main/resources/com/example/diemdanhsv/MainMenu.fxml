@@ -1,25 +1,35 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane prefHeight="366.0" prefWidth="541.0" stylesheets="@styles.css" xmlns="http://javafx.com/javafx/23" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.diemdanhsv.controllers.MainMenuController">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="366.0" prefWidth="541.0" styleClass="anchor-pane" stylesheets="@MainMenu.css" xmlns="http://javafx.com/javafx/23" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.diemdanhsv.controllers.MainMenuController">
 
-    <Label layoutX="16.0" layoutY="19.0" text="ỨNG DỤNG ĐIỂM DANH SINH VIÊN" textAlignment="CENTER" wrapText="true">
+    <Label layoutX="28.0" layoutY="25.0" styleClass="label" text="ỨNG DỤNG ĐIỂM DANH SINH VIÊN" textAlignment="CENTER" wrapText="true">
         <font>
             <Font size="32.0" />
         </font>
     </Label>
 
-    <Label fx:id="welcomeLabel" layoutX="20.0" layoutY="80.0" />
+    <Label fx:id="welcomeLabel" layoutX="20.0" layoutY="80.0" styleClass="label" />
 
-    <VBox alignment="CENTER" layoutX="127.0" layoutY="121.0" spacing="20">
-        <Button onAction="#openAttendance" styleClass="menu-button" text="Xem danh sách điểm danh" />
-        <Button onAction="#openChangePassword" styleClass="menu-button" text="Đổi mật khẩu" />
-        <Button onAction="#handleLogout" styleClass="menu-button" text="Đăng xuất" />
+    <VBox alignment="CENTER" layoutX="138.0" layoutY="119.0" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="195.0" prefWidth="333.0" spacing="20">
+        <Button maxHeight="-Infinity" maxWidth="-Infinity" onAction="#openTeacherView" prefHeight="35.0" prefWidth="300.0" styleClass="menu-button" text="Xem danh sách điểm danh">
+         <padding>
+            <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+         </padding></Button>
+        <Button maxHeight="-Infinity" maxWidth="-Infinity" onAction="#openChangePassword" prefHeight="35.0" prefWidth="300.0" styleClass="menu-button" text="Đổi mật khẩu">
+         <padding>
+            <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+         </padding></Button>
+        <Button maxHeight="-Infinity" maxWidth="-Infinity" onAction="#handleLogout" prefHeight="35.0" prefWidth="300.0" styleClass="menu-button" text="Đăng xuất">
+         <padding>
+            <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+         </padding></Button>
     </VBox>
 
 </AnchorPane>

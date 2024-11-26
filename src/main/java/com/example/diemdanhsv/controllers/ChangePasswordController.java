@@ -1,12 +1,18 @@
 package com.example.diemdanhsv.controllers;
 
 import com.example.diemdanhsv.models.User;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
 import javafx.stage.Stage;
 import com.example.diemdanhsv.repository.UserRepository;
+
+import java.io.IOException;
 
 public class ChangePasswordController {
     @FXML
@@ -30,6 +36,21 @@ public class ChangePasswordController {
     }
 
     @FXML
+    private void openLoginView() {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/example/diemdanhsv/LoginView.fxml"));
+            Parent root = loader.load();
+
+            Stage stage = new Stage();
+            stage.setTitle("Điểm Danh");
+            stage.setScene(new Scene(root));
+            stage.show();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    @FXML
     private void handleChangePassword() {
         String currentPassword = currentPasswordField.getText();
         String newPassword = newPasswordField.getText();
@@ -41,6 +62,7 @@ public class ChangePasswordController {
                     currentUser.setHashedPassword(newPassword);
                     currentUser.setFirstLogin(false);
                     showSuccess("Đổi mật khẩu thành công!");
+                    openLoginView();
                     closeWindow();
                 } else {
                     showError("Có lỗi xảy ra khi cập nhật mật khẩu!");

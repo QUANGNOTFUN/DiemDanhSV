@@ -44,7 +44,7 @@ public class TeachersController implements Initializable {
     @FXML
     private TableColumn<Student, String> genderColumn;
     @FXML
-    private TableColumn<Student, LocalDateTime> dateColumn;
+    private TableColumn<Student, LocalDate> dateColumn;
     @FXML
     private TableColumn<Student, String> statusColumn;
 
@@ -231,8 +231,9 @@ public class TeachersController implements Initializable {
                         attendance.getStudentName(),
                         attendance.getStudentId(),
                         attendance.getGender(),
-                        attendance.getStatus()
-                );
+                        attendance.getStatus(),
+                        attendance.getDate()
+                        );
                 studentList.add(student);
             }
         } else {

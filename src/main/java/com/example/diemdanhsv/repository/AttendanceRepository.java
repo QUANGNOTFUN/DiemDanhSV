@@ -18,7 +18,7 @@ public class AttendanceRepository {
     // Phương thức lấy danh sách Attendance từ cơ sở dữ liệu
     public ObservableList<Attendance> getAttendanceByCourseId(int courseId, int session) {
         ObservableList<Attendance> attendanceList = FXCollections.observableArrayList();
-        String query = "SELECT a.id,a.session, a.student_id, a.course_id, a.date, a.status, s.id, s.name AS student_name, s.gender " +
+        String query = "SELECT a.id, a.session, a.student_id, a.course_id, a.date, a.status, s.id, s.name AS student_name, s.gender " +
                 "FROM attendance a " +
                 "JOIN students s ON a.student_id = s.id " +
                 "WHERE a.course_id = ? AND a.session = ?";

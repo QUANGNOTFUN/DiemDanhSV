@@ -28,7 +28,7 @@ public class StudentsViewModel {
     public void getInfoLoginVM(int userId, int semester) throws SQLException {
         // Lấy thông tin sinh viên từ repository
         Student student = _studentRepo.getInfoLogin(userId);
-        System.out.println(student.getName());
+
         if (student == null) {
             throw new RuntimeException("Không tìm thấy thông tin sinh viên với ID: " + userId);
         }

@@ -1,5 +1,6 @@
 package com.example.diemdanhsv.models;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 public class Student {
@@ -8,10 +9,10 @@ public class Student {
     private int userId;
     private String gender;
     private String status;
-    private LocalDateTime date;
+    private LocalDate date;
 
     // Constructor with all fields including date
-    public Student(int id, String name, int userId, String gender, String status, LocalDateTime date) {
+    public Student(int id, String name, int userId, String gender, String status, LocalDate date) {
         this.id = id;
         this.name = name;
         this.userId = userId;
@@ -79,11 +80,11 @@ public class Student {
         this.status = status;
     }
 
-    public LocalDateTime getDate() {
+    public LocalDate getDate() {
         return date;
     }
 
-    public void setDate(LocalDateTime date) {
+    public void setDate(LocalDate date) {
         this.date = date;
     }
 }

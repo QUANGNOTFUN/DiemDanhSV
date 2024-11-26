@@ -25,7 +25,7 @@ public class MainMenuController {
     }
 
     @FXML
-    private void openAttendance(ActionEvent event) {
+    private void openTeacherView(ActionEvent event) {
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/example/diemdanhsv/TeacherView.fxml"));
             Parent root = loader.load();
@@ -37,6 +37,7 @@ public class MainMenuController {
             Stage stage = new Stage();
             stage.setTitle("Điểm Danh");
             stage.setScene(new Scene(root));
+            stage.setMaximized(true);
             stage.show();
         } catch (IOException e) {
             e.printStackTrace();

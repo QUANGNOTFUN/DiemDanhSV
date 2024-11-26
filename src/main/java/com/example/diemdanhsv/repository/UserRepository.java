@@ -51,7 +51,7 @@ public class UserRepository {
     }
 
     public boolean updatePassword(int userId, String newPassword) {
-        String query = "UPDATE users SET hashed_password = ? WHERE id = ?";
+        String query = "UPDATE users SET hashed_password = ?, first_login = 0 WHERE id = ?";
         try (PreparedStatement stmt = connection.prepareStatement(query)) {
             stmt.setString(1, newPassword);
             stmt.setInt(2, userId);

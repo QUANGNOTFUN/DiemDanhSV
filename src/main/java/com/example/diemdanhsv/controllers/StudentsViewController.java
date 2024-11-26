@@ -78,7 +78,7 @@ public class StudentsViewController {
     // Ràng buộc dữ liệu từ StudentViewModel vào UI
     private void loadInfoUser(int userId, int semester) throws SQLException {
         studentsVM.getInfoLoginVM(userId, semester);
-        System.out.println(studentsVM.getId());
+
         // Cập nhật vào label
         id.setText("MSSV: " + studentsVM.getId());
         name.setText("Tên: " + studentsVM.getName());

@@ -30,7 +30,7 @@ public class StudentsRepository {
                 }
             }
         }
-        System.out.println(student.getName());
+
         return student; // Trả về Student hoặc null nếu không tìm thấy
     }
 }
