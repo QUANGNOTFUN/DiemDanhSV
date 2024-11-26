@@ -22,6 +22,11 @@
          <padding>
             <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
          </padding></Button>
+      <Button fx:id="openAddUserButton" maxHeight="-Infinity" maxWidth="-Infinity" onAction="#openAddUserView" prefHeight="35.0" prefWidth="300.0" styleClass="menu-button" text="Thêm người dùng">
+         <padding>
+            <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+         </padding>
+      </Button>
         <Button maxHeight="-Infinity" maxWidth="-Infinity" onAction="#openChangePassword" prefHeight="35.0" prefWidth="300.0" styleClass="menu-button" text="Đổi mật khẩu">
          <padding>
             <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
@@ -31,5 +36,4 @@
             <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
          </padding></Button>
     </VBox>
-
 </AnchorPane>
