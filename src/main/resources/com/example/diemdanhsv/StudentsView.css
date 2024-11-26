@@ -46,6 +46,14 @@
     -fx-scale-y: 1.05; /* Tăng kích thước khi hover */
 }
 
+.toggle-button:selected  {
+    -fx-background-color: #0056b3; /* Màu nền khi hover (xanh dương đậm) */
+}
+
+.toggle-button:focus {
+    -fx-background-color: gray; /* Màu nền khi nút được focus */
+}
+
 /* ComboBox */
 .subject-combo {
     -fx-background-color: #ffffff; /* Màu nền trắng */

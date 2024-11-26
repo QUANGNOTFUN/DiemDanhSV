@@ -28,8 +28,8 @@
                      <padding>
                         <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
                      </padding>
-                     <ToggleButton fx:id="hk1ToggleButton" mnemonicParsing="false" text="Học kỳ 1" />
-                     <ToggleButton fx:id="hk2ToggleButton" mnemonicParsing="false" text="Học kỳ 2" />
+                     <ToggleButton fx:id="hk1ToggleButton" mnemonicParsing="false" text="Học kỳ 1" styleClass="toggle-button" />
+                     <ToggleButton fx:id="hk2ToggleButton" mnemonicParsing="false" text="Học kỳ 2" styleClass="toggle-button" />
                   </HBox>
 
                   <!-- ComboBox để chọn môn học -->

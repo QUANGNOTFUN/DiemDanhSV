@@ -35,7 +35,7 @@ public class CourseRepository
 
     // lấy danh sách môn học của sinh viên đăng nhập
     public List<Course> getCourseLogin(int studentId, int semester) {
-        String courseIdQuery = "Select DISTINCT  course_id From attendance Where student_id = ?";
+        String courseIdQuery = "Select DISTINCT course_id From attendance Where student_id = ?";
         List<Course> courses = new ArrayList<>();
 
         // Lấy coureId từ student_coures

@@ -107,7 +107,7 @@ public class LoginController {
 
             // Lấy controller từ loader
             StudentsViewController controller = loader.getController();
-            controller.setUserId(user.getId());
+            controller.initialize(user.getId());
 
             // Tạo và hiển thị Stage
             Stage stage = new Stage();

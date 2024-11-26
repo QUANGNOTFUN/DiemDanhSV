@@ -28,7 +28,7 @@ public class StudentsViewModel {
     public void getInfoLoginVM(int userId, int semester) throws SQLException {
         // Lấy thông tin sinh viên từ repository
         Student student = _studentRepo.getInfoLogin(userId);
-
+        System.out.println(student.getName());
         if (student == null) {
             throw new RuntimeException("Không tìm thấy thông tin sinh viên với ID: " + userId);
         }
@@ -38,10 +38,6 @@ public class StudentsViewModel {
 
         // Lấy danh sách các môn học của sinh viên trong học kỳ
         List<Course> coursesList = _courseRepo.getCourseLogin(student.getId(), semester);
-
-        if (coursesList == null || coursesList.isEmpty()) {
-            throw new RuntimeException("Không có môn học nào cho sinh viên ID: " + student.getId() + " trong học kỳ " + semester);
-        }
 
         setCourses(coursesList);
     }

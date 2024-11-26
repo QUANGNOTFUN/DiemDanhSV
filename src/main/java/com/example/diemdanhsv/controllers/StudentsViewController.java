@@ -12,12 +12,13 @@ import java.time.LocalDate;
 import java.util.List;
 
 public class StudentsViewController {
-    private static final StudentsViewModel studentsVM = new StudentsViewModel();
-    private static final AttendanceRecordViewModel attendanceVM = new AttendanceRecordViewModel();
+    private final StudentsViewModel studentsVM = new StudentsViewModel();
+    private final AttendanceRecordViewModel attendanceVM = new AttendanceRecordViewModel();
 
-    private int userId;
+    private static int userId;
 
-    public StudentsViewController() {}
+    public StudentsViewController() {
+    }
 
     // Khung bên trái
     @FXML
@@ -48,20 +49,13 @@ public class StudentsViewController {
 
     // Phương thức khởi tạo
     @FXML
-    public void initialize() {
+    public void initialize(int userId) {
         try {
-            int userId = getUserId();
-            System.out.println(userId);
-
+            this.setUserId(userId);
             // Load dữ liệu ban đầu
-            loadStudentView(userId, 1);
+            loadStudentView(getUserId(), 1);
 
-            // Cấu hình bảng (chỉ cần làm một lần)
-            configureTableColumns();
-
-            // Đăng ký sự kiện thay đổi học kỳ
-            hk1ToggleButton.setOnAction(event -> handleSemesterChange(userId));
-            hk2ToggleButton.setOnAction(event -> handleSemesterChange(userId));
+            groupToggleSemester();
 
         } catch (Exception e) {
             System.err.println("Lỗi khi khởi tạo: " + e.getMessage());
@@ -84,9 +78,9 @@ public class StudentsViewController {
     // Ràng buộc dữ liệu từ StudentViewModel vào UI
     private void loadInfoUser(int userId, int semester) throws SQLException {
         studentsVM.getInfoLoginVM(userId, semester);
-
+        System.out.println(studentsVM.getId());
         // Cập nhật vào label
-        id.setText("MSSV" + studentsVM.getId());
+        id.setText("MSSV: " + studentsVM.getId());
         name.setText("Tên: " + studentsVM.getName());
 
         // cập nhật vào combo box courses
@@ -138,13 +132,23 @@ public class StudentsViewController {
 
         // Đảm bảo danh sách ObservableList được liên kết với TableView
         attendanceTable.setItems(FXCollections.observableArrayList());
+
+        attendanceTable.refresh(); // cập nhật lại nếu đã nhấn điểm danh
     }
 
-    // Phương thức xử lý khi bấm nút
-    private void handleButtonClick(AttendanceRecordViewModel record, int studentId) {
-        attendanceVM.updateStatusCourseVN(record, studentId);
-        record.setStatus("Present");
-        attendanceTable.refresh();
+    // Group toggle semester
+    private void groupToggleSemester() {
+        ToggleGroup semesterToggleGroup = new ToggleGroup();
+        hk1ToggleButton.setToggleGroup(semesterToggleGroup);
+        hk2ToggleButton.setToggleGroup(semesterToggleGroup);
+
+        // Đăng ký sự kiện thay đổi học kỳ
+        semesterToggleGroup.selectedToggleProperty().addListener((observable, oldValue, newValue) -> {
+            if (newValue == null || oldValue == newValue) {
+                return;
+            }
+            handleSemesterChange(userId);
+        });
     }
 
     // Xử lý sự kiện thay đổi học kỳ
@@ -153,8 +157,6 @@ public class StudentsViewController {
 
         try {
             loadStudentView(userId, semester);
-            hk1ToggleButton.setSelected(semester == 1);
-            hk2ToggleButton.setSelected(semester == 2);
         } catch (SQLException e) {
             showAlert("Lỗi", "Không thể tải dữ liệu: " + e.getMessage());
         }

@@ -30,32 +30,38 @@ public class AttendanceRecordViewModel {
     public ObservableList<AttendanceRecordViewModel> getAttendanceOfCourseVM(int studentId, int courseId) {
         ObservableList<AttendanceRecordViewModel> data = FXCollections.observableArrayList();
         List<Attendance> attendanceList = _attendanceRepo.getAttendanceOfCourse(studentId, courseId);
-        LocalDate timeNow = LocalDate.now();
+        LocalDate timeNow = LocalDate.now(); // Lấy ngày hiện tại
 
         for (Attendance attendance : attendanceList) {
             AttendanceRecordViewModel newAttendanceVM = new AttendanceRecordViewModel();
+
+            // Gán dữ liệu cho ViewModel
             newAttendanceVM.setCourseId(attendance.getCourseId());
             newAttendanceVM.setSession(attendance.getSession());
             newAttendanceVM.setDate(attendance.getDate());
             newAttendanceVM.setStatus(attendance.getStatus().equals("present") ? "Present" : "Absent");
-            if (!attendance.getStatus().equals("present") || !attendance.getDate().equals(timeNow)) {
-                newAttendanceVM.setButton(new Button());
+
+            Button button = new Button();
+            if (!attendance.getStatus().equals("present") && attendance.getDate().isEqual(timeNow)) {
+                button.setText("Điểm danh");
+                button.setOnAction(event -> {
+                    _attendanceRepo.updateStatusSessionCourse(attendance, studentId);
+                    // Cập nhật trực tiếp trạng thái trong ViewModel
+                    attendance.setStatus("present"); // Cập nhật trạng thái bản ghi trong cơ sở dữ liệu
+                    newAttendanceVM.setStatus("Present"); // Cập nhật trạng thái trong ViewModel
+                    button.setVisible(false); // Ẩn nút sau khi điểm danh
+                });
+            } else {
+                button.setVisible(false); // Ẩn nút nếu không cần thiết
             }
 
+            newAttendanceVM.setButton(button);
+
+            // Thêm ViewModel vào danh sách
             data.add(newAttendanceVM);
         }
 
         return data;
-    }
-
-    // Cập nhật lại status ngày của buổi học
-    public void updateStatusCourseVN(AttendanceRecordViewModel record, int studentId) {
-        _attendanceRepo.updateStatusCourse(record, studentId);
-    }
-
-    // Kiểm tra trạng thái của buổi đó môn đó
-    public boolean checkAttandanceVM(AttendanceRecordViewModel record, int studentId) {
-        return _attendanceRepo.checkAttandance(record, studentId);
     }
 
     // Getters and setters
