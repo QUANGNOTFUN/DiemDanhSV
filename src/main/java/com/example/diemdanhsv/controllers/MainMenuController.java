@@ -12,6 +12,7 @@ import javafx.stage.Stage;
 import javafx.scene.Node;
 
 import java.io.IOException;
+import java.sql.SQLException;
 
 public class MainMenuController {
     private User currentUser;
@@ -32,7 +33,7 @@ public class MainMenuController {
 //            AnchorPane root= loader.load();
             // Truyền currentUser cho AttendanceController
             TeachersController controller = loader.getController();
-            controller.setCurrentUser(currentUser);
+            controller.initialize(currentUser);
             
             Stage stage = new Stage();
             stage.setTitle("Điểm Danh");
@@ -42,6 +43,8 @@ public class MainMenuController {
         } catch (IOException e) {
             e.printStackTrace();
             showError("Lỗi", "Không thể mở form điểm danh: " + e.getMessage());
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
         }
     }
 

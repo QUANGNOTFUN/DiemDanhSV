@@ -5,26 +5,58 @@ import com.example.diemdanhsv.models.Student;
 import com.example.diemdanhsv.models.User;
 import com.example.diemdanhsv.repository.AttendanceRepository;
 import com.example.diemdanhsv.repository.CourseRepository;
+import com.example.diemdanhsv.viewModels.TeachersViewModel;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.fxml.Initializable;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.FlowPane;
 
 import javafx.scene.control.ToggleGroup;
+import javafx.scene.layout.VBox;
 
-import java.net.URL;
+import java.sql.SQLException;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.util.Optional;
-import java.util.ResourceBundle;
 
-public class TeachersController implements Initializable {
+public class TeachersController {
+    private static User user;
+
+    public static User getUser() {
+        return user;
+    }
+
+    public static void setUser(User user) {
+        TeachersController.user = user;
+    }
+
+    private final TeachersViewModel _teacherVM = new TeachersViewModel();
+
+    // nút chức năng
+    @FXML
+    private VBox vboxAddCourse;
+    @FXML
+    private VBox vboxAddStudent;
+
+    // Chức năng thêm course
+    @FXML
+    public TextField nameCourseInput;
+    @FXML
+    public DatePicker  timeStart;
+    @FXML
+    public DatePicker  timeEnd;
+    @FXML
+    public TextField semester;
+    @FXML
+    public Button addCourseButton;
+
+    //
     @FXML
     public ComboBox<String> sessionComboBox;
+    @FXML
+    private Label nameTecher;
     @FXML
     private Button addButton;
     @FXML
@@ -65,8 +97,40 @@ public class TeachersController implements Initializable {
     @FXML
     private Label selectedCourseLabel;
 
-    @Override
-    public void initialize(URL location, ResourceBundle resources) {
+    @FXML
+    public void initialize(User userId) throws SQLException {
+        try {
+            setUser(userId);
+
+            loadAll();
+
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    private void loadAll() throws SQLException {
+        // load thông tin giáo viên
+        loadInFoTecherLogin(getUser().getId());
+
+        // cấu hình cột trong table view
+        configureAttendanceColumn();
+
+        loadCourses(); // Chỉ tải các nút khóa học
+
+        enableVBoxContainer();
+
+        handleAddCourseButton();
+    }
+
+    public void loadInFoTecherLogin(int userId) throws SQLException {
+        _teacherVM.getInFoTeacherVM(userId);
+        System.out.println(userId);
+        nameTecher.setText("Tên: " + _teacherVM.getName());
+    }
+
+    // cấu hình cột của table view
+    public void configureAttendanceColumn() {
         attendanceRepository = new AttendanceRepository();
         idColumn.setCellValueFactory(new PropertyValueFactory<>("id"));
         nameColumn.setCellValueFactory(new PropertyValueFactory<>("name"));
@@ -106,8 +170,6 @@ public class TeachersController implements Initializable {
 
         studentList = FXCollections.observableArrayList(); // Khởi tạo danh sách rỗng
         attendanceTable.setItems(studentList); // Gắn danh sách rỗng vào bảng
-
-        loadCourses(); // Chỉ tải các nút khóa học
     }
 
     public void add(ActionEvent e) {
@@ -127,6 +189,7 @@ public class TeachersController implements Initializable {
             boolean isAdded = attendanceRepository.addAttendance(studentId, courseId, date, status);
 
             if (isAdded) {
+                loadAll();
                 showAlert("Success", "Student added to attendance successfully.");
             } else {
                 showAlert("Error", "Failed to add student to attendance.");
@@ -136,10 +199,12 @@ public class TeachersController implements Initializable {
             idField.clear();
         } catch (NumberFormatException ex) {
             showAlert("Input Error", "Please enter a valid student ID!");
+        } catch (SQLException ex) {
+            throw new RuntimeException(ex);
         }
     }
 
-    public void remove(ActionEvent e) {
+    public void remove(ActionEvent e) throws SQLException {
         Student selectedStudent = attendanceTable.getSelectionModel().getSelectedItem();
 
         if (selectedStudent == null) {
@@ -157,6 +222,7 @@ public class TeachersController implements Initializable {
 
             if (isDeleted) {
                 studentList.remove(selectedStudent);
+                loadAll();
                 showAlert("Success", "Student deleted successfully.");
             } else {
                 showAlert("Error", "Failed to delete student from the database.");
@@ -273,38 +339,52 @@ public class TeachersController implements Initializable {
         alert.showAndWait();
     }
 
-    public void setCurrentUser(User user) {
-        this.currentUser = user;
-        if (user != null) {
-            switch (user.getRole()) {
-                case "ADMIN":
-                    enableAllControls();
-                    break;
-                case "TEACHER":
-                    enableTeacherControls();
-                    break;
-                case "STUDENT":
-                    enableStudentControls();
-                    break;
-            }
+    // hiển thị chức năng theo role
+    public boolean checkRoleUserLogin() {
+        String role = getUser().getRole();
+        System.out.println(role);
+        return role.equals("ADMIN");
+    }
+
+    private void enableVBoxContainer() {
+        if (checkRoleUserLogin()) {
+            vboxAddCourse.setVisible(true);
+            vboxAddStudent.setVisible(true);
+            return;
         }
+        vboxAddStudent.setVisible(true);
     }
 
-    private void enableAllControls() {
-        addButton.setDisable(false);
-        removeButton.setDisable(false);
-        courseButtonContainer.setDisable(false);
-    }
+    // chức năng thêm course
+    private void handleAddCourseButton() {
+        addCourseButton.setOnAction(e -> {
+            try {
+                // Lấy giá trị từ DatePicker
+                LocalDate startDate = timeStart.getValue();
+                LocalDate endDate = timeEnd.getValue();
 
-    private void enableTeacherControls() {
-        addButton.setDisable(false);
-        removeButton.setDisable(false);
-        courseButtonContainer.setDisable(false);
-    }
+                // Lấy các giá trị khác
+                String nameCourse = nameCourseInput.getText();
+                String semesterValue = semester.getText();
+                System.out.println(nameCourse);
 
-    private void enableStudentControls() {
-        addButton.setDisable(false);
-        removeButton.setDisable(false);
-        courseButtonContainer.setDisable(false);
+                // Kiểm tra xem các trường có hợp lệ không
+                if (startDate == null || endDate == null || nameCourse.isEmpty() || semesterValue.isEmpty()) {
+                    showAlert("Lỗi", "Vui lòng điền đầy đủ thông tin!");
+                    return;
+                }
+
+                // Xử lý thêm course
+                _teacherVM.addCourseToDatabaseVM(nameCourse, startDate, endDate, semesterValue);
+
+                loadAll();
+
+                showAlert("Thành công", "Đã thêm khóa học thành công!");
+            } catch (Exception ex) {
+                ex.printStackTrace();
+                showAlert("Lỗi", "Không thể thêm khóa học: " + ex.getMessage());
+            }
+        });
+
     }
 }
