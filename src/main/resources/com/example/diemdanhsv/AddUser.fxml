@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.CheckBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+
+<VBox alignment="TOP_CENTER" prefHeight="343.0" prefWidth="406.0" styleClass="vbox-background" stylesheets="@AddUser.css" xmlns="http://javafx.com/javafx/23" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.diemdanhsv.controllers.AddUserController">
+
+    <children>
+        <!-- Title -->
+        <Label fx:id="titleLabel" styleClass="label-title" text="Tạo người dùng" />
+
+        <!-- Name Input -->
+        <HBox fx:id="nameRow" alignment="CENTER_LEFT" spacing="10.0" styleClass="form-row">
+            <Label fx:id="nameLabel" styleClass="label-input" text="Tên:" />
+            <TextField fx:id="nameField" prefHeight="26.0" prefWidth="253.0" promptText="Quang" styleClass="textfield" />
+        </HBox>
+
+        <!-- Gender Selection -->
+        <HBox fx:id="genderRow" alignment="CENTER_LEFT" spacing="10.0" styleClass="form-row">
+            <Label fx:id="genderLabel" styleClass="label-input" text="Giới tính:" />
+            <HBox fx:id="genderSelection" alignment="CENTER" spacing="15.0">
+                <CheckBox fx:id="genderMaleCheckBox" mnemonicParsing="false" styleClass="checkbox" text="Nam" />
+                <CheckBox fx:id="genderFemaleCheckBox" mnemonicParsing="false" styleClass="checkbox" text="Nữ" />
+            </HBox>
+        </HBox>
+
+        <!-- Role Selection -->
+        <HBox fx:id="roleRow" alignment="CENTER_LEFT" spacing="10.0" styleClass="form-row">
+            <Label fx:id="roleLabel" styleClass="label-input" text="Vai trò:" />
+            <HBox fx:id="roleSelection" alignment="CENTER" spacing="15.0">
+                <CheckBox fx:id="roleStudentCheckBox" mnemonicParsing="false" styleClass="checkbox" text="Học sinh" />
+                <CheckBox fx:id="roleTeacherCheckBox" mnemonicParsing="false" styleClass="checkbox" text="Giáo viên" />
+            </HBox>
+        </HBox>
+
+        <!-- Submit Button -->
+        <Button fx:id="createButton" mnemonicParsing="false" styleClass="button" text="Tạo" VBox.vgrow="NEVER" />
+    </children>
+</VBox>

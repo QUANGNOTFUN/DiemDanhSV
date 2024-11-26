@@ -41,7 +41,6 @@ public class LoginController {
             User user = userRepository.login(username, password);
             
             if (user != null) {
-                System.out.println(user.getRole());
                 if (user.getRole().equals("ADMIN") || user.getRole().equals("TEACHER")) {
                     if (user.isFirstLogin()) {
                         openChangePasswordForm(user);
@@ -89,7 +88,7 @@ public class LoginController {
             Parent root = loader.load();
 
             MainMenuController controller = loader.getController();
-            controller.setCurrentUser(user);
+            controller.initialize(user);
 
             Stage stage = new Stage();
             stage.setScene(new Scene(root));

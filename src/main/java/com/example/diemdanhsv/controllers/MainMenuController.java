@@ -6,6 +6,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
@@ -15,14 +16,31 @@ import java.io.IOException;
 import java.sql.SQLException;
 
 public class MainMenuController {
-    private User currentUser;
-    
+    private static User currentUser;
+    @FXML
+    private Button openAddUserButton;
+
+    @FXML
+    public void initialize(User user) {
+        try {
+            this.setCurrentUser(user);
+
+        } catch (Exception e) {
+            System.err.println("Lỗi khi khởi tạo: " + e.getMessage());
+        }
+    }
+
     @FXML
     private Label welcomeLabel;
 
     public void setCurrentUser(User user) {
-        this.currentUser = user;
-        // Có thể thêm logic để hiển thị/ẩn các chức năng dựa trên role của user
+        currentUser = user;
+        
+        if (currentUser.getRole().equals("ADMIN")) {
+            openAddUserButton.setVisible(true);
+        } else {
+            openAddUserButton.setVisible(false);
+        }
     }
 
     @FXML
@@ -92,5 +110,22 @@ public class MainMenuController {
         alert.setHeaderText(null);
         alert.setContentText(message);
         alert.showAndWait();
+    }
+
+    public void openAddUserView(ActionEvent actionEvent) {
+        if (currentUser.getRole().equals("ADMIN")) {
+            try {
+                FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/example/diemdanhsv/AddUser.fxml"));
+                Parent root = loader.load();
+
+                Stage stage = new Stage();
+                stage.setTitle("Tạo người dùng");
+                stage.setScene(new Scene(root));
+                stage.show();
+            } catch (IOException e) {
+                e.printStackTrace();
+                showError("Lỗi", "Không thể mở form đổi mật khẩu: " + e.getMessage());
+            }
+        }
     }
 }
