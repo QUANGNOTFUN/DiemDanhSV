@@ -28,6 +28,7 @@
                     <HBox alignment="CENTER" spacing="10">
                         <Button fx:id="addButton" onAction="#add" styleClass="button" text="Thêm" />
                         <Button fx:id="removeButton" onAction="#remove" styleClass="button" text="Xóa" />
+                        <Button fx:id="exportButton" onAction="#exportAttendance" styleClass="button" text="Xuất danh sách" />
                     </HBox>
                 </children>
             </VBox>
