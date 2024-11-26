@@ -37,7 +37,7 @@ public class AttendanceRecordViewModel {
 
             // Gán dữ liệu cho ViewModel
             newAttendanceVM.setCourseId(attendance.getCourseId());
-            newAttendanceVM.setSession(attendance.getSession());
+            newAttendanceVM.setSession(attendance.getSessionInt());
             newAttendanceVM.setDate(attendance.getDate());
             newAttendanceVM.setStatus(attendance.getStatus().equals("present") ? "Present" : "Absent");
 

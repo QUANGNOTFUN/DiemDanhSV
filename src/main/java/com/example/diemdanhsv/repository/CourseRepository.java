@@ -60,8 +60,7 @@ public class CourseRepository {
                                 newCourse.setName(courseRs.getString("name"));
                                 newCourse.setStartDate(courseRs.getDate("start_date").toLocalDate());
                                 newCourse.setEndDate(courseRs.getDate("end_date").toLocalDate());
-                                newCourse.setDay(courseRs.getString("day"));
-                                newCourse.setAcademicYear(courseRs.getString("academic_year"));
+
                                 courses.add(newCourse);
                             }
                         }

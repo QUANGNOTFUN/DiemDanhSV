@@ -12,7 +12,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane xmlns="http://javafx.com/javafx/23" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.diemdanhsv.controllers.AttendanceController">
+<AnchorPane xmlns="http://javafx.com/javafx/23" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.diemdanhsv.controllers.TeachersController">
     <!-- Form Inputs -->
     <VBox layoutX="14.0" layoutY="95.0" prefHeight="240.0" prefWidth="250" spacing="15">
         <Label style="-fx-font-size: 20px; -fx-font-weight: bold;" text="Thông tin sinh viên" />

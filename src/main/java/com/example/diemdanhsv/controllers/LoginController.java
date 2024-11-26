@@ -41,14 +41,15 @@ public class LoginController {
             User user = userRepository.login(username, password);
             
             if (user != null) {
-                if (user.getRole().equals("admin")) {
-                    if (!user.isFirstLogin()) {
+                System.out.println(user.getRole());
+                if (user.getRole().equals("ADMIN")) {
+                    if (user.isFirstLogin()) {
                         openChangePasswordForm(user);
                     } else {
                         openMainMenuForm(user);
                     }
                 } else {
-                    if (!user.isFirstLogin()) {
+                    if (user.isFirstLogin()) {
                         openChangePasswordForm(user);
                     } else {
                         openStudentView(user);

@@ -82,25 +82,4 @@ public class Course {
     public void setSemester(int semester) {
         this.semester = semester;
     }
-
-    public void setDay(String day) {
-        this.day = day;
-    }
-
-    public String getAcademicYear() {
-        return academicYear;
-    }
-
-    public void setAcademicYear(String academicYear) {
-        this.academicYear = academicYear;
-    }
-
-    public int getSemester() {
-        return semester;
-    }
-
-    public void setSemester(int semester) {
-        this.semester = semester;
-    }
-
 }
