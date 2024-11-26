@@ -42,7 +42,7 @@ public class LoginController {
             
             if (user != null) {
                 System.out.println(user.getRole());
-                if (user.getRole().equals("ADMIN")) {
+                if (user.getRole().equals("ADMIN") || user.getRole().equals("TEACHER")) {
                     if (user.isFirstLogin()) {
                         openChangePasswordForm(user);
                     } else {

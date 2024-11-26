@@ -3,6 +3,7 @@
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.DatePicker?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
@@ -12,12 +13,27 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 
-<BorderPane prefHeight="900.0" prefWidth="1800.0" stylesheets="@TeacherView.css" xmlns="http://javafx.com/javafx/23" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.diemdanhsv.controllers.TeachersController">
+<BorderPane prefHeight="900.0" prefWidth="1700.0" stylesheets="@TeacherView.css" xmlns="http://javafx.com/javafx/23" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.diemdanhsv.controllers.TeachersController">
     <left>
         <!-- Form Inputs -->
         <VBox alignment="TOP_CENTER" prefHeight="900.0" prefWidth="444.0" spacing="15" styleClass="container-box" BorderPane.alignment="CENTER">
-            <Label prefWidth="254.0" styleClass="title-label" text="Thông tin sinh viên" />
-            <VBox alignment="CENTER" styleClass="sub-container-box" prefHeight="274.0" prefWidth="444.0" spacing="20.0">
+         <Label fx:id="nameTecher" contentDisplay="RIGHT" styleClass="name-label" text="Tên: " />
+            <VBox alignment="TOP_CENTER" prefHeight="527.0" prefWidth="423.0" spacing="10.0" styleClass="sub-container-box">
+                <children>
+                    <!-- New Label for Selected Course -->
+                    <Label fx:id="selectedCourseLabel" contentDisplay="RIGHT" styleClass="selected-course-label" text="Chọn môn học: ">
+                        <graphic>
+                            <ComboBox fx:id="sessionComboBox" prefWidth="150" promptText="Buổi" />
+                        </graphic>
+                    </Label>
+                     <FlowPane fx:id="courseButtonContainer" alignment="TOP_CENTER" columnHalignment="CENTER" hgap="10" prefHeight="446.0" prefWidth="423.0" prefWrapLength="423.0" vgap="10">
+                  <padding>
+                     <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                  </padding>
+               </FlowPane>
+                </children>
+            </VBox>
+            <VBox fx:id="vboxAddStudent" alignment="CENTER" prefHeight="156.0" prefWidth="423.0" spacing="10.0" styleClass="sub-container-box">
                 <children>
                     <Label styleClass="subtitle-label" text="Thêm sinh viên vào khóa học hiện tại" />
                     <Label contentDisplay="RIGHT" styleClass="info-label" text="Mã số sinh viên:">
@@ -32,26 +48,41 @@
                     </HBox>
                 </children>
             </VBox>
-            <VBox alignment="TOP_CENTER" styleClass="sub-container-box" prefHeight="527.0" prefWidth="423.0" spacing="10.0">
-                <children>
-                    <!-- New Label for Selected Course -->
-                    <Label fx:id="selectedCourseLabel" contentDisplay="RIGHT" styleClass="selected-course-label" text="Chọn môn học: ">
-                        <graphic>
-                            <ComboBox fx:id="sessionComboBox" prefWidth="150" promptText="Buổi" />
-                        </graphic>
-                    </Label>
-                     <FlowPane fx:id="courseButtonContainer" alignment="TOP_CENTER" columnHalignment="CENTER" hgap="10" orientation="VERTICAL" prefHeight="446.0" prefWidth="423.0" vgap="10">
-                  <padding>
-                     <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
-                  </padding>
-               </FlowPane>
-                </children>
-            </VBox>
+         <VBox fx:id="vboxAddCourse" alignment="CENTER" prefHeight="322.0" prefWidth="423.0" spacing="5.0" styleClass="sub-container-box" visible="false">
+            <children>
+               <Label styleClass="subtitle-label" text="Thêm môn học mới" />
+               <Label contentDisplay="RIGHT" styleClass="info-label-add" text="Tên môn:">
+                  <graphic>
+                     <TextField fx:id="nameCourseInput" opacity="0.65" prefHeight="30.0" prefWidth="170.0" promptText="tên môn" text="" />
+                  </graphic>
+               </Label>
+               <Label contentDisplay="RIGHT" styleClass="info-label-add" text="Ngày bắt đầu">
+                  <graphic>
+                     <DatePicker fx:id="timeStart" opacity="0.65" prefHeight="30.0" prefWidth="145.0" promptText="26/11/2024"/>
+                  </graphic>
+               </Label>
+               <Label contentDisplay="RIGHT" styleClass="info-label-add" text="Ngày kết thúc">
+                  <graphic>
+                     <DatePicker fx:id="timeEnd" opacity="0.65" prefHeight="30.0" prefWidth="145.0" promptText="11/2/2025" />
+                  </graphic>
+               </Label>
+               <Label contentDisplay="RIGHT" styleClass="info-label-add" text="Học kỳ">
+                  <graphic>
+                     <TextField fx:id="semester" opacity="0.65" prefHeight="30.0" prefWidth="185.0" promptText="1 or 2"/>
+                  </graphic>
+               </Label>
+               <HBox alignment="CENTER" prefHeight="23.0" prefWidth="402.0" spacing="30.0">
+                  <children>
+                     <Button fx:id="addCourseButton" onAction="#add" styleClass="button" text="Thêm" />
+                  </children>
+               </HBox>
+            </children>
+         </VBox>
         </VBox>
     </left>
     <center>
         <!-- Table View -->
-        <VBox alignment="BOTTOM_CENTER" styleClass="container-box" prefHeight="700.0" prefWidth="930.0" spacing="10" BorderPane.alignment="CENTER">
+        <VBox alignment="BOTTOM_CENTER" prefHeight="700.0" prefWidth="930.0" spacing="10" styleClass="container-box" BorderPane.alignment="CENTER">
             <Label styleClass="table-title-label" text="Danh sách điểm danh" />
             <TableView fx:id="attendanceTable" prefHeight="790.0" prefWidth="1398.0" styleClass="data-table">
                 <columns>

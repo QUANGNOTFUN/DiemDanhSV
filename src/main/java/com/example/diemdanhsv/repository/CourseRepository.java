@@ -9,6 +9,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -94,4 +95,32 @@ public class CourseRepository {
     }
 
 
+    public void addCourseToDatabase(String nameCourse, LocalDate startDate, LocalDate endDate, String semesterValue) {
+        // Câu truy vấn SQL
+        String query = "INSERT INTO course (name, start_date, end_date, day, academic_year, semester) VALUES (?, ?, ?, ?, ?, ?)";
+
+        // Lấy giá trị cho "day" và "academic_year"
+        String dayValue = "Thứ " + (startDate.getDayOfWeek().getValue() + 1);
+        String academicYear = startDate.getYear() + "-" + (startDate.getYear() + 1);
+
+        try (Connection conn = DatabaseConnection.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(query)) {
+
+            // Gán giá trị cho các placeholder (?)
+            stmt.setString(1, nameCourse);
+            stmt.setDate(2, java.sql.Date.valueOf(startDate));
+            stmt.setDate(3, java.sql.Date.valueOf(endDate));
+            stmt.setString(4, dayValue);
+            stmt.setString(5, academicYear);
+            stmt.setInt(6, Integer.parseInt(semesterValue));
+
+            // Thực thi câu lệnh
+            int rowsInserted = stmt.executeUpdate();
+            if (rowsInserted > 0) {
+                System.out.println("Khóa học đã được thêm vào cơ sở dữ liệu thành công!");
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
 }

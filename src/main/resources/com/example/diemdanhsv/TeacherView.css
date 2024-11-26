@@ -7,7 +7,7 @@
 .container-box {
     -fx-background-color: linear-gradient(to bottom, #ffcdc1, #ffe8e0); /* Gradient hồng cam pastel chính */
     -fx-padding: 10px; /* Khoảng cách bên trong */
-    -fx-spacing: 20px; /* Khoảng cách giữa các thành phần */
+    -fx-spacing: 10px; /* Khoảng cách giữa các thành phần */
     -fx-border-radius: 10px; /* Bo góc cho viền */
 }
 
@@ -20,8 +20,8 @@
 }
 
 /* Đặt kiểu cho tiêu đề */
-.title-label {
-    -fx-font-size: 24px; /* Kích thước chữ */
+.name-label {
+    -fx-font-size: 22px; /* Kích thước chữ */
     -fx-font-weight: bold; /* Đậm chữ */
     -fx-text-fill: #2c3e50; /* Màu xám đậm dễ đọc */
     -fx-padding: 10px; /* Khoảng cách bên trong */
@@ -29,7 +29,7 @@
 
 /* Đặt kiểu cho tiêu đề phụ */
 .subtitle-label {
-    -fx-font-size: 20px; /* Kích thước chữ */
+    -fx-font-size: 18px; /* Kích thước chữ */
     -fx-font-weight: bold; /* Đậm chữ */
     -fx-text-fill: #34495e; /* Màu xám đậm hơn */
     -fx-padding: 5px 10px;
@@ -37,7 +37,14 @@
 
 /* Các label thông tin sinh viên */
 .info-label {
-    -fx-font-size: 18px;
+    -fx-font-size: 14px;
+    -fx-text-fill: #4a4a4a; /* Màu xám đậm */
+    -fx-padding: 5px 10px;
+}
+
+/* Các label thông tin sinh viên */
+.info-label-add {
+    -fx-font-size: 14px;
     -fx-text-fill: #4a4a4a; /* Màu xám đậm */
     -fx-padding: 5px 10px;
 }

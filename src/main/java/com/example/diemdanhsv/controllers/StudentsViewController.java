@@ -5,8 +5,14 @@ import com.example.diemdanhsv.viewModels.AttendanceRecordViewModel;
 import com.example.diemdanhsv.viewModels.StudentsViewModel;
 import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Node;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.*;
+import javafx.stage.Stage;
 
+import java.io.IOException;
 import java.sql.SQLException;
 import java.time.LocalDate;
 import java.util.List;
@@ -33,6 +39,9 @@ public class StudentsViewController {
     @FXML
     private ComboBox<String> listCourse;
 
+    @FXML
+    private Button logoutButton;
+
     // khung bên phải
     @FXML
     private Label titleSubject;
@@ -57,6 +66,7 @@ public class StudentsViewController {
 
             groupToggleSemester();
 
+            handleLogoutButton();
         } catch (Exception e) {
             System.err.println("Lỗi khi khởi tạo: " + e.getMessage());
         }
@@ -174,4 +184,26 @@ public class StudentsViewController {
         alert.setContentText(message);
         alert.showAndWait();
     }
+
+    // Đăng xuất
+    private void handleLogoutButton() {
+        logoutButton.setOnAction(e -> {
+            try {
+                // Mở giao diện đăng nhập
+                FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/example/diemdanhsv/LoginView.fxml"));
+                Parent root = loader.load();
+                Stage loginStage = new Stage();
+                loginStage.setScene(new Scene(root));
+                loginStage.show();
+
+                // Lấy Stage hiện tại từ logoutButton và đóng nó
+                ((Stage) hk1ToggleButton.getScene().getWindow()).close();
+
+            } catch (IOException ex) {
+                ex.printStackTrace();
+                showAlert("Lỗi", "Không thể đăng xuất: " + ex.getMessage());
+            }
+        });
+    }
+
 }
