@@ -14,7 +14,7 @@
     
     <PasswordField fx:id="passwordField" prefWidth="200.0" promptText="Mật khẩu" />
     
-    <Button fx:id="loginButton" onAction="#handleLogin" style="-fx-background-color: #4CAF50; -fx-text-fill: white; -fx-font-weight: bold; -fx-font-size: 14px;" text="Đăng nhập" />
+    <Button onAction="#handleLogin" style="-fx-background-color: #4CAF50; -fx-text-fill: white; -fx-font-weight: bold; -fx-font-size: 14px;" text="Đăng nhập" />
     
     <Label fx:id="messageLabel" style="-fx-text-fill: red;" />
 

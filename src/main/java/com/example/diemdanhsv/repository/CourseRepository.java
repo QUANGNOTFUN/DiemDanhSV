@@ -12,25 +12,25 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class CourseRepository
-{
+public class CourseRepository {
+
     public ObservableList<String> getCourses() {
-        ObservableList<String> subjects = FXCollections.observableArrayList();
+        ObservableList<String> courses = FXCollections.observableArrayList();
+        String query = "SELECT name FROM course"; // Lấy tên khóa học
 
-        String query = "SELECT name FROM courses";
-        try (Connection conn = DatabaseConnection.getConnection();
-             PreparedStatement stmt = conn.prepareStatement(query);
-             ResultSet rs = stmt.executeQuery()) {
+        try (Connection connection = DatabaseConnection.getConnection();
+             PreparedStatement preparedStatement = connection.prepareStatement(query);
+             ResultSet resultSet = preparedStatement.executeQuery()) {
 
-            while (rs.next()) {
-                subjects.add(rs.getString("name")); // Thay "subject_name" bằng tên cột chứa tên môn học
+            while (resultSet.next()) {
+                courses.add(resultSet.getString("name"));
             }
 
-        } catch (Exception e) {
+        } catch (SQLException e) {
             e.printStackTrace();
         }
 
-        return subjects;
+        return courses;
     }
 
     // lấy danh sách môn học của sinh viên đăng nhập
@@ -74,4 +74,25 @@ public class CourseRepository
 
         return courses;
     }
+
+    public int getCourseIdByName(String courseName) {
+        String query = "SELECT id FROM course WHERE name = ?";
+        try (Connection connection = DatabaseConnection.getConnection();
+             PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+
+            preparedStatement.setString(1, courseName);
+            ResultSet resultSet = preparedStatement.executeQuery();
+
+            if (resultSet.next()) {
+                return resultSet.getInt("id"); // Trả về ID của khóa học
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return -1; // Trả về -1 nếu không tìm thấy
+    }
+
+
 }

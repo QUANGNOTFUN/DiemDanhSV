@@ -83,16 +83,24 @@ public class Course {
         this.semester = semester;
     }
 
-    @Override
-    public String toString() {
-        return "Course{" +
-                "id=" + id +
-                ", name='" + name + '\'' +
-                ", startDate=" + startDate +
-                ", endDate=" + endDate +
-                ", day='" + day + '\'' +
-                ", academicYear='" + academicYear + '\'' +
-                ", semester=" + semester +
-                '}';
+    public void setDay(String day) {
+        this.day = day;
     }
+
+    public String getAcademicYear() {
+        return academicYear;
+    }
+
+    public void setAcademicYear(String academicYear) {
+        this.academicYear = academicYear;
+    }
+
+    public int getSemester() {
+        return semester;
+    }
+
+    public void setSemester(int semester) {
+        this.semester = semester;
+    }
+
 }

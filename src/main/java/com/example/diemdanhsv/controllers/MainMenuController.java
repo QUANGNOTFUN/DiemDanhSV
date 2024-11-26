@@ -7,6 +7,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
+import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 import javafx.scene.Node;
 
@@ -28,7 +29,7 @@ public class MainMenuController {
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/example/diemdanhsv/TeacherView.fxml"));
             Parent root = loader.load();
-            
+//            AnchorPane root= loader.load();
             // Truyền currentUser cho AttendanceController
             TeachersController controller = loader.getController();
             controller.setCurrentUser(currentUser);
