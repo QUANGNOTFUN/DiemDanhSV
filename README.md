@@ -56,5 +56,8 @@ Dưới đây là các thành viên tham gia vào dự án:
 | Trần Nguyễn Thành Hiển     | Quản lý dự án, Attendance For teacher | @ThanhHienIT2004      |
   | Phạm Đăng Quang            | Attendance For student   | @QUANGNOTFUN          |
 | Nguyễn Trường AN           | Login, logout                      | @TruongAn-28          |
+# Giao diện ứng dụng
+- Login
+![image](https://github.com/user-attachments/assets/03b5dce7-85b1-4be3-aa46-4fa34d8ca22d)
 
 
