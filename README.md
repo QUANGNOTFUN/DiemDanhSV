@@ -57,7 +57,33 @@ Dưới đây là các thành viên tham gia vào dự án:
   | Phạm Đăng Quang            | Attendance For student   | @QUANGNOTFUN          |
 | Nguyễn Trường AN           | Login, logout                      | @TruongAn-28          |
 # Giao diện ứng dụng
-- Login
+
+Login
+
 ![image](https://github.com/user-attachments/assets/03b5dce7-85b1-4be3-aa46-4fa34d8ca22d)
+  
+Main menu của Admin
+
+![image](https://github.com/user-attachments/assets/55630a00-3a82-4fb7-90d1-fd61500dac43)
+
+Giao diện  của admin
+
+![image](https://github.com/user-attachments/assets/41271134-da40-4dc9-a106-14fc1f307d04)
+
+Giao diện thêm người dùng của admin
+
+![image](https://github.com/user-attachments/assets/bf75e01b-983c-4682-ae94-fb40308da620)
+
+Đổi mật khẩu
+
+![image](https://github.com/user-attachments/assets/d8b37182-79a9-4048-a7f5-fa08d36be6aa)
+
+Giao diện điểm danh (chỉ hiện nút điểm danh khi đúng ngày)
+
+![image](https://github.com/user-attachments/assets/7a38c099-f042-4f6a-ab9e-a5a0e4fda7a1)
+
+Giao diện quản lý điểm danh của giáo viên
+
+![image](https://github.com/user-attachments/assets/35233f8c-250f-435d-82ea-83ecc5587d77)
 
 
